@@ -13,8 +13,8 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @OpenAPIDefinition(servers = {@Server(url = "/api/car-repair-register", description = "Default Server URL")})
 public class CarRepairRegisterApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CarRepairRegisterApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CarRepairRegisterApplication.class, args);
+    }
 
 }

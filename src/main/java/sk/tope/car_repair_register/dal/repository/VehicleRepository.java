@@ -4,13 +4,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
-import sk.tope.car_repair_register.dal.domain.Customer;
+import sk.tope.car_repair_register.dal.domain.Vehicle;
 
 import java.util.Optional;
 
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
+public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
-    Page<Customer> findAll(Specification<Customer> specification, Pageable pageable);
+    Page<Vehicle> findAll(Specification<Vehicle> specification, Pageable pageable);
 
-    Optional<Customer> findById(Long id);
+    Optional<Vehicle> findById(Long id);
 }

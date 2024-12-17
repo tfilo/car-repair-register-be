@@ -15,50 +15,61 @@ CREATE SEQUENCE IF NOT EXISTS sq_vehicle START WITH 1 INCREMENT BY 1;
 CREATE TABLE attachment
 (
     id            BIGINT                      NOT NULL,
-    name          VARCHAR(255)                NOT NULL,
-    repair_log_id BIGINT                      NOT NULL,
+    creator       VARCHAR(36)                 NOT NULL,
     created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     modified_at   TIMESTAMP WITHOUT TIME ZONE,
     deleted_at    TIMESTAMP WITHOUT TIME ZONE,
+    name          VARCHAR(255)                NOT NULL,
+    mime_type     VARCHAR(255)                NOT NULL,
+    repair_log_id BIGINT                      NOT NULL,
     CONSTRAINT pk_attachment PRIMARY KEY (id)
 );
 
 CREATE TABLE customer
 (
-    id           BIGINT                            NOT NULL,
-    name         VARCHAR(64) collate "sk-SK-x-icu" NOT NULL,
-    surname      VARCHAR(64) collate "sk-SK-x-icu",
-    mobile       VARCHAR(20),
-    email        VARCHAR(320),
-    entity_owner VARCHAR(255)                      NOT NULL,
-    created_at   TIMESTAMP WITHOUT TIME ZONE       NOT NULL,
-    modified_at  TIMESTAMP WITHOUT TIME ZONE,
-    deleted_at   TIMESTAMP WITHOUT TIME ZONE,
+    id          BIGINT                            NOT NULL,
+    creator     VARCHAR(36)                       NOT NULL,
+    created_at  TIMESTAMP WITHOUT TIME ZONE       NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE,
+    deleted_at  TIMESTAMP WITHOUT TIME ZONE,
+    name        VARCHAR(64) collate "sk-SK-x-icu" NOT NULL,
+    surname     VARCHAR(64) collate "sk-SK-x-icu",
+    mobile      VARCHAR(20),
+    email       VARCHAR(320),
     CONSTRAINT pk_customer PRIMARY KEY (id)
 );
 
 CREATE TABLE file
 (
-    id   BIGINT NOT NULL,
-    data BYTEA  NOT NULL,
+    id          BIGINT                      NOT NULL,
+    creator     VARCHAR(36)                 NOT NULL,
+    created_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    modified_at TIMESTAMP WITHOUT TIME ZONE,
+    deleted_at  TIMESTAMP WITHOUT TIME ZONE,
+    data        BYTEA                       NOT NULL,
     CONSTRAINT pk_file PRIMARY KEY (id)
 );
 
 CREATE TABLE repair_log
 (
-    id          BIGINT                      NOT NULL,
-    content     TEXT                        NOT NULL,
-    repair_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    vehicle_id  BIGINT                      NOT NULL,
-    created_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    id          BIGINT                              NOT NULL,
+    creator     VARCHAR(36)                         NOT NULL,
+    created_at  TIMESTAMP WITHOUT TIME ZONE         NOT NULL,
     modified_at TIMESTAMP WITHOUT TIME ZONE,
     deleted_at  TIMESTAMP WITHOUT TIME ZONE,
+    content     VARCHAR(5000) collate "sk-SK-x-icu" NOT NULL,
+    repair_date TIMESTAMP WITHOUT TIME ZONE         NOT NULL,
+    vehicle_id  BIGINT                              NOT NULL,
     CONSTRAINT pk_repair_log PRIMARY KEY (id)
 );
 
 CREATE TABLE vehicle
 (
     id                  BIGINT                      NOT NULL,
+    creator             VARCHAR(36)                 NOT NULL,
+    created_at          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    modified_at         TIMESTAMP WITHOUT TIME ZONE,
+    deleted_at          TIMESTAMP WITHOUT TIME ZONE,
     registration_plate  VARCHAR(20)                 NOT NULL,
     customer_id         BIGINT                      NOT NULL,
     vin                 VARCHAR(20),
@@ -70,9 +81,6 @@ CREATE TABLE vehicle
     brand               VARCHAR(64) collate "sk-SK-x-icu",
     model               VARCHAR(64) collate "sk-SK-x-icu",
     year_of_manufacture INTEGER,
-    created_at          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    modified_at         TIMESTAMP WITHOUT TIME ZONE,
-    deleted_at          TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_vehicle PRIMARY KEY (id)
 );
 

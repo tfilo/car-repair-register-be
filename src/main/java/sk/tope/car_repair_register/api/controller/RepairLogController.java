@@ -17,26 +17,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sk.tope.car_repair_register.api.service.CustomerApiService;
-import sk.tope.car_repair_register.api.service.so.CustomerCreateSo;
-import sk.tope.car_repair_register.api.service.so.CustomerSo;
-import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
+import sk.tope.car_repair_register.api.service.RepairLogApiService;
+import sk.tope.car_repair_register.api.service.so.RepairLogCreateSo;
+import sk.tope.car_repair_register.api.service.so.RepairLogSo;
+import sk.tope.car_repair_register.api.service.so.RepairLogUpdateSo;
 
-@Tag(name = "customer")
+@Tag(name = "repairLog")
 @RestController
-@RequestMapping(value = "/customer")
-public class CustomerController {
+@RequestMapping(value = "/repair-log")
+public class RepairLogController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RepairLogController.class);
 
-    private final CustomerApiService customerApiService;
+    private final RepairLogApiService repairLogApiService;
 
-    public CustomerController(CustomerApiService customerApiService) {
-        this.customerApiService = customerApiService;
+    public RepairLogController(RepairLogApiService repairLogApiService) {
+        this.repairLogApiService = repairLogApiService;
     }
 
     @Operation(
-            description = "Get customer by id."
+            description = "Get repair log by id."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
@@ -44,14 +44,14 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CustomerSo> getCustomerById(@PathVariable("id") Long id) {
-        LOGGER.debug("getCustomerById({})", id);
-        return new ResponseEntity<>(customerApiService.get(id), HttpStatus.OK);
+    public ResponseEntity<RepairLogSo> getRepairLogById(@PathVariable("id") Long id) {
+        LOGGER.debug("getRepairLogById({})", id);
+        return new ResponseEntity<>(repairLogApiService.get(id), HttpStatus.OK);
     }
 
 
     @Operation(
-            description = "Find customers by query string and pageable.",
+            description = "Find repair logs by query string, vehicleId and pageable.",
             parameters = {
                     @Parameter(in = ParameterIn.QUERY, name = "page", content = @Content(schema = @Schema(type = "integer"))),
                     @Parameter(in = ParameterIn.QUERY, name = "size", content = @Content(schema = @Schema(type = "integer"))),
@@ -65,13 +65,13 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @GetMapping
-    public ResponseEntity<Page<CustomerSo>> findCustomers(@RequestParam(value = "query", required = false) String query, @Parameter(hidden = true) Pageable pageable) {
-        LOGGER.debug("findCustomers({},{})", query, pageable);
-        return new ResponseEntity<>(customerApiService.find(query, pageable), HttpStatus.OK);
+    public ResponseEntity<Page<RepairLogSo>> findRepairLogs(@RequestParam(value = "query", required = false) String query, @RequestParam(value = "vehicleId", required = false) Long vehicleId, @Parameter(hidden = true) Pageable pageable) {
+        LOGGER.debug("findRepairLogs({},{},{})", query, vehicleId, pageable);
+        return new ResponseEntity<>(repairLogApiService.find(query, vehicleId, pageable), HttpStatus.OK);
     }
 
     @Operation(
-            description = "Create new customer."
+            description = "Create new repair log."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "created"),
@@ -79,13 +79,13 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @PostMapping
-    public ResponseEntity<CustomerSo> createCustomer(@Valid @RequestBody CustomerCreateSo customerCreateSo) {
-        LOGGER.debug("createCustomer({})", customerCreateSo);
-        return new ResponseEntity<>(customerApiService.create(customerCreateSo), HttpStatus.CREATED);
+    public ResponseEntity<RepairLogSo> createRepairLog(@Valid @RequestBody RepairLogCreateSo repairLogCreateSo) {
+        LOGGER.debug("createRepairLog({})", repairLogCreateSo);
+        return new ResponseEntity<>(repairLogApiService.create(repairLogCreateSo), HttpStatus.CREATED);
     }
 
     @Operation(
-            description = "Update existing customer."
+            description = "Update existing repair log."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
@@ -93,13 +93,13 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CustomerSo> updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerUpdateSo customerUpdateSo) {
-        LOGGER.debug("updateCustomer({},{})", id, customerUpdateSo);
-        return new ResponseEntity<>(customerApiService.update(id, customerUpdateSo), HttpStatus.OK);
+    public ResponseEntity<RepairLogSo> updateRepairLog(@PathVariable("id") Long id, @Valid @RequestBody RepairLogUpdateSo repairLogUpdateSo) {
+        LOGGER.debug("updateRepairLog({},{})", id, repairLogUpdateSo);
+        return new ResponseEntity<>(repairLogApiService.update(id, repairLogUpdateSo), HttpStatus.OK);
     }
 
     @Operation(
-            description = "Delete customer with all his vehicles and records."
+            description = "Delete repair log with all its records."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
@@ -107,9 +107,8 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @DeleteMapping(value = "/{id}")
-    public void deleteCustomer(@PathVariable("id") Long id) {
-        LOGGER.debug("deleteCustomer({})", id);
-        customerApiService.delete(id);
+    public void deleteRepairLog(@PathVariable("id") Long id) {
+        LOGGER.debug("deleteRepairLog({})", id);
+        repairLogApiService.delete(id);
     }
-
 }

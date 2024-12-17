@@ -13,10 +13,10 @@ public class TokenHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenHandler.class);
 
-    public String getLogin() {
+    public String getSubject() {
         JwtAuthenticationToken token = jwtAuthenticationToken();
         if (token != null) {
-            return token.getPrincipal().toString();
+            return token.getName();
         }
         throw new RuntimeException("Unauthorized");
     }

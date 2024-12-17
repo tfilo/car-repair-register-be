@@ -17,26 +17,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sk.tope.car_repair_register.api.service.CustomerApiService;
-import sk.tope.car_repair_register.api.service.so.CustomerCreateSo;
-import sk.tope.car_repair_register.api.service.so.CustomerSo;
-import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
+import sk.tope.car_repair_register.api.service.VehicleApiService;
+import sk.tope.car_repair_register.api.service.so.VehicleCreateSo;
+import sk.tope.car_repair_register.api.service.so.VehicleSo;
+import sk.tope.car_repair_register.api.service.so.VehicleUpdateSo;
 
-@Tag(name = "customer")
+@Tag(name = "vehicle")
 @RestController
-@RequestMapping(value = "/customer")
-public class CustomerController {
+@RequestMapping(value = "/vehicle")
+public class VehicleController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VehicleController.class);
 
-    private final CustomerApiService customerApiService;
+    private final VehicleApiService vehicleApiService;
 
-    public CustomerController(CustomerApiService customerApiService) {
-        this.customerApiService = customerApiService;
+    public VehicleController(VehicleApiService vehicleApiService) {
+        this.vehicleApiService = vehicleApiService;
     }
 
     @Operation(
-            description = "Get customer by id."
+            description = "Get vehicle by id."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
@@ -44,14 +44,14 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CustomerSo> getCustomerById(@PathVariable("id") Long id) {
-        LOGGER.debug("getCustomerById({})", id);
-        return new ResponseEntity<>(customerApiService.get(id), HttpStatus.OK);
+    public ResponseEntity<VehicleSo> getVehicleById(@PathVariable("id") Long id) {
+        LOGGER.debug("getVehicleById({})", id);
+        return new ResponseEntity<>(vehicleApiService.get(id), HttpStatus.OK);
     }
 
 
     @Operation(
-            description = "Find customers by query string and pageable.",
+            description = "Find vehicles by query string, customerId and pageable.",
             parameters = {
                     @Parameter(in = ParameterIn.QUERY, name = "page", content = @Content(schema = @Schema(type = "integer"))),
                     @Parameter(in = ParameterIn.QUERY, name = "size", content = @Content(schema = @Schema(type = "integer"))),
@@ -65,13 +65,13 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @GetMapping
-    public ResponseEntity<Page<CustomerSo>> findCustomers(@RequestParam(value = "query", required = false) String query, @Parameter(hidden = true) Pageable pageable) {
-        LOGGER.debug("findCustomers({},{})", query, pageable);
-        return new ResponseEntity<>(customerApiService.find(query, pageable), HttpStatus.OK);
+    public ResponseEntity<Page<VehicleSo>> findVehicles(@RequestParam(value = "query", required = false) String query, @RequestParam(value = "customerId", required = false) Long customerId, @Parameter(hidden = true) Pageable pageable) {
+        LOGGER.debug("findVehicles({},{},{})", query, customerId, pageable);
+        return new ResponseEntity<>(vehicleApiService.find(query, customerId, pageable), HttpStatus.OK);
     }
 
     @Operation(
-            description = "Create new customer."
+            description = "Create new vehicle."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "created"),
@@ -79,13 +79,13 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @PostMapping
-    public ResponseEntity<CustomerSo> createCustomer(@Valid @RequestBody CustomerCreateSo customerCreateSo) {
-        LOGGER.debug("createCustomer({})", customerCreateSo);
-        return new ResponseEntity<>(customerApiService.create(customerCreateSo), HttpStatus.CREATED);
+    public ResponseEntity<VehicleSo> createVehicle(@Valid @RequestBody VehicleCreateSo vehicleCreateSo) {
+        LOGGER.debug("createVehicle({})", vehicleCreateSo);
+        return new ResponseEntity<>(vehicleApiService.create(vehicleCreateSo), HttpStatus.CREATED);
     }
 
     @Operation(
-            description = "Update existing customer."
+            description = "Update existing vehicle."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
@@ -93,13 +93,13 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CustomerSo> updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerUpdateSo customerUpdateSo) {
-        LOGGER.debug("updateCustomer({},{})", id, customerUpdateSo);
-        return new ResponseEntity<>(customerApiService.update(id, customerUpdateSo), HttpStatus.OK);
+    public ResponseEntity<VehicleSo> updateVehicle(@PathVariable("id") Long id, @Valid @RequestBody VehicleUpdateSo vehicleUpdateSo) {
+        LOGGER.debug("updateVehicle({},{})", id, vehicleUpdateSo);
+        return new ResponseEntity<>(vehicleApiService.update(id, vehicleUpdateSo), HttpStatus.OK);
     }
 
     @Operation(
-            description = "Delete customer with all his vehicles and records."
+            description = "Delete vehicle with all its records."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
@@ -107,9 +107,8 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @DeleteMapping(value = "/{id}")
-    public void deleteCustomer(@PathVariable("id") Long id) {
-        LOGGER.debug("deleteCustomer({})", id);
-        customerApiService.delete(id);
+    public void deleteVehicle(@PathVariable("id") Long id) {
+        LOGGER.debug("deleteVehicle({})", id);
+        vehicleApiService.delete(id);
     }
-
 }

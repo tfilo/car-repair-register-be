@@ -1,48 +1,48 @@
 spring:
-    application:
-        name: car_repair_register
-    datasource:
-        driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/evidence?currentSchema=public
-        username: evidence
-        password: evidence123
-        hikari:
-            maximum-pool-size: 5
-    security:
-        oauth2:
-            resourceserver:
-                jwt:
-                    issuer-uri: http://localhost/auth/realms/evidence
-                    jwk-set-uri: http://localhost/auth/realms/evidence/protocol/openid-connect/certs
-            client:
-                provider:
-                    keycloak:
-                        issuer-uri: http://localhost/auth/realms/evidence
-                        user-name-attribute: preferred_username
-    jpa:
-        show-sql: true
-        properties:
-            hibernate:
-                event:
-                    merge:
-                        entity_copy_observer: allow
-                format_sql: false
-                enable_lazy_load_no_trans: true
-                jdbc:
-                    lob:
-                        non_contextual_creation: true
-        open-in-view: false
-        hibernate:
-            ddl-auto: validate
+  application:
+    name: car_repair_register
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/evidence?currentSchema=public
+    username: evidence
+    password: evidence123
+    hikari:
+      maximum-pool-size: 5
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost/auth/realms/evidence
+          jwk-set-uri: http://localhost/auth/realms/evidence/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost/auth/realms/evidence
+            user-name-attribute: preferred_username
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        event:
+          merge:
+            entity_copy_observer: allow
+        format_sql: false
+        enable_lazy_load_no_trans: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
 server:
-    port: 8090
-    servlet:
-        context-path: /api/car-repair-register
+  port: 8090
+  servlet:
+    context-path: /api/car-repair-register
 
 management:
-    server:
-        port: 9090
+  server:
+    port: 9090
 
 logging:
-    level:
-        sk.tope.car_repair_register: debug
+  level:
+    sk.tope.car_repair_register: debug

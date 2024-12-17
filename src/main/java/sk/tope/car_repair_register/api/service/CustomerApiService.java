@@ -16,8 +16,6 @@ import sk.tope.car_repair_register.dal.repository.CustomerRepository;
 import sk.tope.car_repair_register.dal.specification.CustomerSpecification;
 import sk.tope.car_repair_register.mapper.CustomerMapper;
 
-import java.time.LocalDateTime;
-
 @Service
 public class CustomerApiService {
 
@@ -30,7 +28,7 @@ public class CustomerApiService {
     private CustomerRepository customerRepository;
 
     @Autowired
-    public  void setTokenHandler(TokenHandler tokenHandler) {
+    public void setTokenHandler(TokenHandler tokenHandler) {
         this.tokenHandler = tokenHandler;
     }
 
@@ -46,14 +44,14 @@ public class CustomerApiService {
 
     public Page<CustomerSo> find(String query, Pageable pageable) {
         LOGGER.debug("find({},{})", query, pageable);
-        Page<Customer> result = customerRepository.findAll(new CustomerSpecification(query, tokenHandler.getLogin()), pageable);
+        Page<Customer> result = customerRepository.findAll(new CustomerSpecification(query), pageable);
         LOGGER.debug("find({},{})={}", query, pageable, result);
         return result.map(c -> customerMapper.mapToCustomerSo(c));
     }
 
     public CustomerSo get(Long id) {
         LOGGER.debug("get({})", id);
-        Customer result = customerRepository.findByIdAndEntityOwnerAndDeletedIsNull(id, tokenHandler.getLogin()).orElseThrow(()-> new RuntimeException("Not found"));
+        Customer result = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         LOGGER.debug("get({})={}", id, result);
         return customerMapper.mapToCustomerSo(result);
     }
@@ -61,7 +59,7 @@ public class CustomerApiService {
     @Transactional
     public CustomerSo create(CustomerCreateSo customerCreateSo) {
         LOGGER.debug("create({})", customerCreateSo);
-        Customer customer = customerMapper.mapToCustomer(customerCreateSo, tokenHandler.getLogin(), LocalDateTime.now());
+        Customer customer = customerMapper.mapToCustomer(customerCreateSo);
         customer = customerRepository.save(customer);
         LOGGER.debug("create({})={}", customerCreateSo, customer);
         return customerMapper.mapToCustomerSo(customer);
@@ -70,17 +68,16 @@ public class CustomerApiService {
     @Transactional
     public CustomerSo update(Long id, CustomerUpdateSo customerUpdateSo) {
         LOGGER.debug("update({})", customerUpdateSo);
-        Customer customer = customerRepository.findByIdAndEntityOwnerAndDeletedIsNull(id, tokenHandler.getLogin()).orElseThrow(()-> new RuntimeException("Not found"));
-        customerMapper.mapTo(customer, customerUpdateSo, LocalDateTime.now());
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        customerMapper.mapTo(customer, customerUpdateSo);
         customer = customerRepository.save(customer);
         return customerMapper.mapToCustomerSo(customer);
     }
 
+    @Transactional
     public void delete(Long id) {
         LOGGER.debug("delete({})", id);
-        Customer customer = customerRepository.findByIdAndEntityOwnerAndDeletedIsNull(id, tokenHandler.getLogin()).orElseThrow(()-> new RuntimeException("Not found"));
-        customer.setDeleted(LocalDateTime.now());
-        // TODO update all vehicles and their records
-        customerRepository.save(customer);
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        customerRepository.delete(customer);
     }
 }

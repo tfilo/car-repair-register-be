@@ -1,16 +1,20 @@
 package sk.tope.car_repair_register.dal.domain;
 
-import org.hibernate.annotations.JdbcTypeCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
 
 
 @Table(name = "file")
+@SQLDelete(sql = "UPDATE file SET deleted_at = current_timestamp WHERE id=?")
+@SQLRestriction("deleted_at IS NULL")
 @Entity
-public class File {
+public class File extends TechnicalAttributes {
     @Id
     private Long id;
 
@@ -65,6 +69,10 @@ public class File {
     public String toString() {
         return "File{" +
                 "id=" + id +
+                ", created=" + super.getCreated() +
+                ", modified=" + super.getModified() +
+                ", deleted=" + super.getDeleted() +
+                ", creator=" + super.getCreator() +
                 '}';
     }
 }

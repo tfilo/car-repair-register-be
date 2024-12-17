@@ -2,25 +2,30 @@ package sk.tope.car_repair_register.dal.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "attachment")
+@SQLDelete(sql = "UPDATE attachment SET deleted_at = current_timestamp WHERE id=?")
+@SQLRestriction("deleted_at IS NULL")
 @SequenceGenerator(name = "attachment_generator", allocationSize = 1, sequenceName = "sq_attachment")
-public class Attachment {
+public class Attachment extends TechnicalAttributes {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(generator = "attachment_generator")
     private Long id;
 
     @NotNull
     @Column(name = "name")
     private String name;
+
+    @NotNull
+    @Column(name = "mime_type")
+    private String mimeType;
 
     @NotNull
     @OneToOne(mappedBy = "attachment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,16 +35,6 @@ public class Attachment {
     @ManyToOne
     @JoinColumn(name = "repair_log_id", referencedColumnName = "id")
     private RepairLog repairLog;
-
-    @NotNull
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime created;
-
-    @Column(name = "modified_at")
-    private LocalDateTime modified;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deleted;
 
     @Override
     public boolean equals(Object o) {
@@ -69,6 +64,14 @@ public class Attachment {
         this.name = name;
     }
 
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
     public File getFile() {
         return file;
     }
@@ -85,38 +88,16 @@ public class Attachment {
         this.repairLog = repairLog;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getModified() {
-        return modified;
-    }
-
-    public void setModified(LocalDateTime modified) {
-        this.modified = modified;
-    }
-
-    public LocalDateTime getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(LocalDateTime deleted) {
-        this.deleted = deleted;
-    }
-
     @Override
     public String toString() {
         return "Attachment{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", created=" + created +
-                ", modified=" + modified +
-                ", deleted=" + deleted +
+                ", mimeType='" + mimeType + '\'' +
+                ", created=" + super.getCreated() +
+                ", modified=" + super.getModified() +
+                ", deleted=" + super.getDeleted() +
+                ", creator=" + super.getCreator() +
                 '}';
     }
 }

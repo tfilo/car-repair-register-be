@@ -1,13 +1,13 @@
 package sk.tope.car_repair_register.mapper;
 
 import org.mapstruct.*;
-import sk.tope.car_repair_register.api.service.so.CustomerCreateSo;
-import sk.tope.car_repair_register.api.service.so.CustomerSo;
-import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
-import sk.tope.car_repair_register.dal.domain.Customer;
+import sk.tope.car_repair_register.api.service.so.RepairLogCreateSo;
+import sk.tope.car_repair_register.api.service.so.RepairLogSo;
+import sk.tope.car_repair_register.api.service.so.RepairLogUpdateSo;
+import sk.tope.car_repair_register.dal.domain.RepairLog;
 
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-public interface CustomerMapper {
+public interface RepairLogMapper {
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
@@ -15,11 +15,11 @@ public interface CustomerMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "vehicles", ignore = true)
+            @Mapping(target = "attachments", ignore = true)
     })
-    Customer mapToCustomer(CustomerCreateSo customerCreateSo);
+    RepairLog mapToRepairLog(RepairLogCreateSo repairLogCreateSo);
 
-    CustomerSo mapToCustomerSo(Customer customer);
+    RepairLogSo mapToRepairLogSo(RepairLog repairLog);
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
@@ -27,7 +27,7 @@ public interface CustomerMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "vehicles", ignore = true)
+            @Mapping(target = "attachments", ignore = true)
     })
-    void mapTo(@MappingTarget Customer customer, CustomerUpdateSo customerUpdateSo);
+    void mapTo(@MappingTarget RepairLog repairLog, RepairLogUpdateSo repairLogUpdateSo);
 }

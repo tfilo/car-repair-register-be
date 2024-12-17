@@ -1,11 +1,10 @@
 package sk.tope.car_repair_register.dal.domain;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OrderBy;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,11 +16,13 @@ import java.util.Objects;
                 @UniqueConstraint(name = "uc_vehicle_registration_plate", columnNames = {"customer_id", "registration_plate", "deleted_at"})
         }
 )
+@SQLDelete(sql = "UPDATE vehicle SET deleted_at = current_timestamp WHERE id=?")
+@SQLRestriction("deleted_at IS NULL")
 @SequenceGenerator(name = "vehicle_generator", allocationSize = 1, sequenceName = "sq_vehicle")
-public class Vehicle {
+public class Vehicle extends TechnicalAttributes {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(generator = "vehicle_generator")
     private Long id;
 
@@ -60,16 +61,6 @@ public class Vehicle {
 
     @Column(name = "year_of_manufacture")
     private Integer yearOfManufacture;
-
-    @NotNull
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime created;
-
-    @Column(name = "modified_at")
-    private LocalDateTime modified;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deleted;
 
     @OneToMany(
             mappedBy = "vehicle",
@@ -188,30 +179,6 @@ public class Vehicle {
         this.yearOfManufacture = yearOfManufacture;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getModified() {
-        return modified;
-    }
-
-    public void setModified(LocalDateTime modified) {
-        this.modified = modified;
-    }
-
-    public LocalDateTime getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(LocalDateTime deleted) {
-        this.deleted = deleted;
-    }
-
     public List<RepairLog> getRepairs() {
         if (Objects.isNull(repairs)) {
             repairs = new ArrayList<>();
@@ -235,10 +202,11 @@ public class Vehicle {
                 ", brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", yearOfManufacture=" + yearOfManufacture +
-                ", created=" + created +
-                ", modified=" + modified +
-                ", deleted=" + deleted +
                 ", engineCode='" + engineCode + '\'' +
+                ", created=" + super.getCreated() +
+                ", modified=" + super.getModified() +
+                ", deleted=" + super.getDeleted() +
+                ", creator=" + super.getCreator() +
                 '}';
     }
 }

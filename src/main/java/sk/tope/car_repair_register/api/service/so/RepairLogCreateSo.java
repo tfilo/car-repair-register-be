@@ -1,0 +1,25 @@
+package sk.tope.car_repair_register.api.service.so;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
+
+import java.time.LocalDateTime;
+
+@Schema(name = "RepairLogCreate")
+public record RepairLogCreateSo(
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Size(max = 5000)
+        @NotBlank
+        String content,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotNull
+        Long vehicleId,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotNull
+        @PastOrPresent
+        LocalDateTime repairDate
+) {
+}

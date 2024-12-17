@@ -2,8 +2,8 @@ package sk.tope.car_repair_register.dal.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,18 +16,18 @@ import java.util.Objects;
                 @UniqueConstraint(name = "uc_repair_log_repair", columnNames = {"repair_date", "vehicle_id", "deleted_at"})
         }
 )
+@SQLDelete(sql = "UPDATE repair_log SET deleted_at = current_timestamp WHERE id=?")
+@SQLRestriction("deleted_at IS NULL")
 @SequenceGenerator(name = "repair_log_generator", allocationSize = 1, sequenceName = "sq_repair_log")
-public class RepairLog {
+public class RepairLog extends TechnicalAttributes {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(generator = "repair_log_generator")
     private Long id;
 
     @NotNull
-    @Lob
-    @JdbcTypeCode(SqlTypes.LONGVARCHAR)
-    @Column(name = "content", columnDefinition = "TEXT collate \"sk-SK-x-icu\"")
+    @Column(name = "content", columnDefinition = "VARCHAR(5000) collate \"sk-SK-x-icu\"")
     private String content;
 
     @NotNull
@@ -47,16 +47,6 @@ public class RepairLog {
     )
     @OrderBy("name ASC")
     private List<Attachment> attachments;
-
-    @NotNull
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime created;
-
-    @Column(name = "modified_at")
-    private LocalDateTime modified;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deleted;
 
     @Override
     public boolean equals(Object o) {
@@ -113,30 +103,6 @@ public class RepairLog {
         this.attachments = attachments;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getModified() {
-        return modified;
-    }
-
-    public void setModified(LocalDateTime modified) {
-        this.modified = modified;
-    }
-
-    public LocalDateTime getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(LocalDateTime deleted) {
-        this.deleted = deleted;
-    }
-
     @Override
     public String toString() {
         return "RepairLog{" +
@@ -144,9 +110,10 @@ public class RepairLog {
                 ", content='" + content + '\'' +
                 ", repairDate=" + repairDate +
                 ", vehicle=" + vehicle +
-                ", created=" + created +
-                ", modified=" + modified +
-                ", deleted=" + deleted +
+                ", created=" + super.getCreated() +
+                ", modified=" + super.getModified() +
+                ", deleted=" + super.getDeleted() +
+                ", creator=" + super.getCreator() +
                 '}';
     }
 }

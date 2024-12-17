@@ -2,19 +2,22 @@ package sk.tope.car_repair_register.dal.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "customer")
+@SQLDelete(sql = "UPDATE customer SET deleted_at = current_timestamp WHERE id=?")
+@SQLRestriction("deleted_at IS NULL")
 @SequenceGenerator(name = "customer_generator", allocationSize = 1, sequenceName = "sq_customer")
-public class Customer {
+public class Customer extends TechnicalAttributes {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(generator = "customer_generator")
     private Long id;
 
@@ -30,20 +33,6 @@ public class Customer {
 
     @Column(name = "email", length = 320)
     private String email;
-
-    @NotNull
-    @Column(name = "entity_owner", updatable = false)
-    private String entityOwner;
-
-    @NotNull
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime created;
-
-    @Column(name = "modified_at")
-    private LocalDateTime modified;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deleted;
 
     @OneToMany(
             mappedBy = "customer",
@@ -106,30 +95,6 @@ public class Customer {
         this.email = email;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getModified() {
-        return modified;
-    }
-
-    public void setModified(LocalDateTime modified) {
-        this.modified = modified;
-    }
-
-    public LocalDateTime getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(LocalDateTime deleted) {
-        this.deleted = deleted;
-    }
-
     public List<Vehicle> getVehicles() {
         if (Objects.isNull(vehicles)) {
             vehicles = new ArrayList<>();
@@ -141,22 +106,15 @@ public class Customer {
         this.vehicles = vehicles;
     }
 
-    public String getEntityOwner() {
-        return entityOwner;
-    }
-
-    public void setEntityOwner(String entityOwner) {
-        this.entityOwner = entityOwner;
-    }
-
     @Override
     public String toString() {
         return "Customer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", created=" + created +
-                ", modified=" + modified +
-                ", deleted=" + deleted +
+                ", created=" + super.getCreated() +
+                ", modified=" + super.getModified() +
+                ", deleted=" + super.getDeleted() +
+                ", creator=" + super.getCreator() +
                 '}';
     }
 }
