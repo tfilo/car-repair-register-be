@@ -14,11 +14,6 @@ spring:
         jwt:
           issuer-uri: http://localhost/auth/realms/evidence
           jwk-set-uri: http://localhost/auth/realms/evidence/protocol/openid-connect/certs
-      client:
-        provider:
-          keycloak:
-            issuer-uri: http://localhost/auth/realms/evidence
-            user-name-attribute: preferred_username
   jpa:
     show-sql: true
     properties:

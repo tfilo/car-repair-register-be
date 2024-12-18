@@ -85,10 +85,10 @@ CREATE TABLE vehicle
 );
 
 ALTER TABLE repair_log
-    ADD CONSTRAINT uc_repair_log_repair UNIQUE (repair_date, vehicle_id, deleted_at);
+    ADD CONSTRAINT uc_repair_log_repair UNIQUE NULLS NOT DISTINCT (repair_date, vehicle_id, deleted_at);
 
 ALTER TABLE vehicle
-    ADD CONSTRAINT uc_vehicle_registration_plate UNIQUE (customer_id, registration_plate, deleted_at);
+    ADD CONSTRAINT uc_vehicle_registration_plate UNIQUE NULLS NOT DISTINCT (customer_id, registration_plate, deleted_at);
 
 ALTER TABLE attachment
     ADD CONSTRAINT FK_ATTACHMENT_ON_REPAIR_LOG FOREIGN KEY (repair_log_id) REFERENCES repair_log (id);

@@ -23,7 +23,7 @@ public class TechnicalAttributesListener {
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {
-        TechnicalAttributesListener.tokenHandler = tokenHandler;
+        this.tokenHandler = tokenHandler;
     }
 
     @PrePersist
