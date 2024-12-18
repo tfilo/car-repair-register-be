@@ -5,7 +5,10 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreRemove;
 import jakarta.persistence.PreUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
+import sk.tope.car_repair_register.bundle.ErrorBundle;
 import sk.tope.car_repair_register.component.TokenHandler;
 
 import java.time.LocalDateTime;
@@ -17,7 +20,7 @@ public class TechnicalAttributesListener {
 
     private void checkOwner(TechnicalAttributes ta) {
         if (!ta.getCreator().equals(tokenHandler.getSubject())) {
-            throw new RuntimeException("User does not have permission to read or modify this object");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, ErrorBundle.FORBIDDEN.name());
         }
     }
 

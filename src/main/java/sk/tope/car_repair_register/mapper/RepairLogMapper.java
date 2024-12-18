@@ -15,7 +15,8 @@ public interface RepairLogMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "attachments", ignore = true)
+            @Mapping(target = "attachments", ignore = true),
+            @Mapping(target = "vehicle", ignore = true)
     })
     RepairLog mapToRepairLog(RepairLogCreateSo repairLogCreateSo);
 
@@ -27,7 +28,8 @@ public interface RepairLogMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "attachments", ignore = true)
+            @Mapping(target = "attachments", ignore = true),
+            @Mapping(target = "vehicle", ignore = true)
     })
     void mapTo(@MappingTarget RepairLog repairLog, RepairLogUpdateSo repairLogUpdateSo);
 }

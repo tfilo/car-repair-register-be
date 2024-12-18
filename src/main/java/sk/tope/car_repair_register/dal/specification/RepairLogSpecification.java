@@ -25,7 +25,7 @@ public record RepairLogSpecification(String query, Long vehicleId) implements Sp
         LOGGER.debug("RepairLogSpecification({},{})", query, vehicleId);
 
         Join<RepairLog, Vehicle> vehicleJoin = root.join("vehicle");
-        Join<Vehicle, Customer> customerJoin = root.join("customer");
+        Join<Vehicle, Customer> customerJoin = vehicleJoin.join("customer");
 
         List<Predicate> predicates = new ArrayList<>();
         if (vehicleId != null) {

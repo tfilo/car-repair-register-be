@@ -14,6 +14,11 @@ spring:
         jwt:
           issuer-uri: http://localhost/auth/realms/evidence
           jwk-set-uri: http://localhost/auth/realms/evidence/protocol/openid-connect/certs
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 64MB
+      max-request-size: 72MB
   jpa:
     show-sql: true
     properties:
@@ -33,6 +38,8 @@ server:
   port: 8090
   servlet:
     context-path: /api/car-repair-register
+  error:
+    include-message: always
 
 management:
   server:

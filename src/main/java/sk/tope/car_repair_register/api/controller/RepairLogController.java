@@ -40,7 +40,9 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "not authorized"),
+            @ApiResponse(responseCode = "401", description = "unauthorized"),
+            @ApiResponse(responseCode = "403", description = "forbidden"),
+            @ApiResponse(responseCode = "404", description = "not found"),
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @GetMapping(value = "/{id}")
@@ -61,7 +63,9 @@ public class RepairLogController {
             })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "not authorized"),
+            @ApiResponse(responseCode = "401", description = "unauthorized"),
+            @ApiResponse(responseCode = "403", description = "forbidden"),
+            @ApiResponse(responseCode = "404", description = "not found"),
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @GetMapping
@@ -75,7 +79,9 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "created"),
-            @ApiResponse(responseCode = "401", description = "not authorized"),
+            @ApiResponse(responseCode = "401", description = "unauthorized"),
+            @ApiResponse(responseCode = "403", description = "forbidden"),
+            @ApiResponse(responseCode = "404", description = "not found"),
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @PostMapping
@@ -89,7 +95,9 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "not authorized"),
+            @ApiResponse(responseCode = "401", description = "unauthorized"),
+            @ApiResponse(responseCode = "403", description = "forbidden"),
+            @ApiResponse(responseCode = "404", description = "not found"),
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @PutMapping(value = "/{id}")
@@ -103,7 +111,9 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "not authorized"),
+            @ApiResponse(responseCode = "401", description = "unauthorized"),
+            @ApiResponse(responseCode = "403", description = "forbidden"),
+            @ApiResponse(responseCode = "404", description = "not found"),
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @DeleteMapping(value = "/{id}")
