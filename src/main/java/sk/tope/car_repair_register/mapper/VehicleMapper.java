@@ -6,7 +6,8 @@ import sk.tope.car_repair_register.api.service.so.VehicleSo;
 import sk.tope.car_repair_register.api.service.so.VehicleUpdateSo;
 import sk.tope.car_repair_register.dal.domain.Vehicle;
 
-@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        componentModel = "spring")
 public interface VehicleMapper {
 
     @Mappings({

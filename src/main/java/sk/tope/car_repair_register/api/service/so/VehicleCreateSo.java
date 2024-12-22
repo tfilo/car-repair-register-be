@@ -14,15 +14,12 @@ public record VehicleCreateSo(
         Long customerId,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
         @Size(max = 20)
-        @NotBlank
         String vin,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
         @Size(max = 20)
-        @NotBlank
         String engineCode,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
         @Size(max = 20)
-        @NotBlank
         String fuelType,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
         @Min(0)
@@ -38,11 +35,9 @@ public record VehicleCreateSo(
         Integer batteryCapacity,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
         @Size(max = 64)
-        @NotBlank
         String brand,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
         @Size(max = 64)
-        @NotBlank
         String model,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
         @Min(1900)

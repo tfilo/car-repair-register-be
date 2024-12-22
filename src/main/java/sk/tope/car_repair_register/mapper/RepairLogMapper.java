@@ -6,7 +6,8 @@ import sk.tope.car_repair_register.api.service.so.RepairLogSo;
 import sk.tope.car_repair_register.api.service.so.RepairLogUpdateSo;
 import sk.tope.car_repair_register.dal.domain.RepairLog;
 
-@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        componentModel = "spring")
 public interface RepairLogMapper {
 
     @Mappings({

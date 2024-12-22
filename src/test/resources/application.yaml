@@ -2,12 +2,10 @@ spring:
   application:
     name: car_repair_register
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/evidence?currentSchema=public
-    username: evidence
-    password: evidence123
     hikari:
-      maximum-pool-size: 5
+      max-lifetime: 60000
+    test-on-borrow: true
+    testWhileIdle: true
   security:
     oauth2:
       resourceserver:
@@ -34,6 +32,9 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+  flyway:
+    cleanDisabled: false
+
 server:
   port: 8090
   servlet:

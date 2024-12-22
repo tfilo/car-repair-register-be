@@ -13,6 +13,7 @@ import sk.tope.car_repair_register.api.service.so.VehicleCreateSo;
 import sk.tope.car_repair_register.api.service.so.VehicleSo;
 import sk.tope.car_repair_register.api.service.so.VehicleUpdateSo;
 import sk.tope.car_repair_register.bundle.ErrorBundle;
+import sk.tope.car_repair_register.component.TokenHandler;
 import sk.tope.car_repair_register.dal.domain.Customer;
 import sk.tope.car_repair_register.dal.domain.Vehicle;
 import sk.tope.car_repair_register.dal.repository.CustomerRepository;
@@ -24,12 +25,15 @@ import sk.tope.car_repair_register.mapper.VehicleMapper;
 public class VehicleApiService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleApiService.class);
-
+    private static TokenHandler tokenHandler;
     private VehicleMapper vehicleMapper;
-
     private VehicleRepository vehicleRepository;
-
     private CustomerRepository customerRepository;
+
+    @Autowired
+    public void setTokenHandler(TokenHandler tokenHandler) {
+        this.tokenHandler = tokenHandler;
+    }
 
     @Autowired
     public void setVehicleMapper(VehicleMapper vehicleMapper) {
@@ -48,7 +52,7 @@ public class VehicleApiService {
 
     public Page<VehicleSo> find(String query, Long customerId, Pageable pageable) {
         LOGGER.debug("find({},{},{})", query, customerId, pageable);
-        Page<Vehicle> result = vehicleRepository.findAll(new VehicleSpecification(query, customerId), pageable);
+        Page<Vehicle> result = vehicleRepository.findAll(new VehicleSpecification(query, customerId, tokenHandler), pageable);
         LOGGER.debug("find({},{},{})={}", query, customerId, pageable, result);
         return result.map(v -> vehicleMapper.mapToVehicleSo(v));
     }
@@ -66,7 +70,7 @@ public class VehicleApiService {
         Vehicle vehicle = vehicleMapper.mapToVehicle(vehicleCreateSo);
         Customer customer = customerRepository.findById(vehicleCreateSo.customerId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
         vehicle.setCustomer(customer);
-        vehicle = vehicleRepository.save(vehicle);
+        vehicle = vehicleRepository.saveAndFlush(vehicle);
         LOGGER.debug("create({})={}", vehicleCreateSo, vehicle);
         return vehicleMapper.mapToVehicleSo(vehicle);
     }
@@ -80,7 +84,7 @@ public class VehicleApiService {
             Customer customer = customerRepository.findById(vehicleUpdateSo.customerId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
             vehicle.setCustomer(customer);
         }
-        vehicle = vehicleRepository.save(vehicle);
+        vehicle = vehicleRepository.saveAndFlush(vehicle);
         return vehicleMapper.mapToVehicleSo(vehicle);
     }
 

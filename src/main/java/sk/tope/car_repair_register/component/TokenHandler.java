@@ -19,6 +19,7 @@ public class TokenHandler {
     public String getSubject() {
         JwtAuthenticationToken token = jwtAuthenticationToken();
         if (token != null) {
+            LOGGER.debug("TokenHandler - getSubject()={}", token.getName());
             return token.getName();
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorBundle.UNAUTHORIZED.name());

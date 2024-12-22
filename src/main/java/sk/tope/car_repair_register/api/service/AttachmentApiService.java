@@ -62,7 +62,7 @@ public class AttachmentApiService {
         RepairLog repairLog = repairLogRepository.findById(repairLogId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.REPAIR_LOG_NOT_FOUND.name()));
         Attachment attachment = attachmentMapper.mapFileToEntity(multipartFile);
         attachment.setRepairLog(repairLog);
-        attachment = attachmentRepository.save(attachment);
+        attachment = attachmentRepository.saveAndFlush(attachment);
         return attachmentMapper.mapToAttachmentSo(attachment);
     }
 

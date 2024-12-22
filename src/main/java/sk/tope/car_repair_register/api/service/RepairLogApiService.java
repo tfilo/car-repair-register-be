@@ -13,6 +13,7 @@ import sk.tope.car_repair_register.api.service.so.RepairLogCreateSo;
 import sk.tope.car_repair_register.api.service.so.RepairLogSo;
 import sk.tope.car_repair_register.api.service.so.RepairLogUpdateSo;
 import sk.tope.car_repair_register.bundle.ErrorBundle;
+import sk.tope.car_repair_register.component.TokenHandler;
 import sk.tope.car_repair_register.dal.domain.RepairLog;
 import sk.tope.car_repair_register.dal.domain.Vehicle;
 import sk.tope.car_repair_register.dal.repository.RepairLogRepository;
@@ -24,12 +25,15 @@ import sk.tope.car_repair_register.mapper.RepairLogMapper;
 public class RepairLogApiService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RepairLogApiService.class);
-
+    private static TokenHandler tokenHandler;
     private RepairLogMapper repairLogMapper;
-
     private RepairLogRepository repairLogRepository;
-
     private VehicleRepository vehicleRepository;
+
+    @Autowired
+    public void setTokenHandler(TokenHandler tokenHandler) {
+        this.tokenHandler = tokenHandler;
+    }
 
     @Autowired
     public void setRepairLogMapper(RepairLogMapper repairLogMapper) {
@@ -48,7 +52,7 @@ public class RepairLogApiService {
 
     public Page<RepairLogSo> find(String query, Long vehicleId, Pageable pageable) {
         LOGGER.debug("find({},{},{})", query, vehicleId, pageable);
-        Page<RepairLog> result = repairLogRepository.findAll(new RepairLogSpecification(query, vehicleId), pageable);
+        Page<RepairLog> result = repairLogRepository.findAll(new RepairLogSpecification(query, vehicleId, tokenHandler), pageable);
         LOGGER.debug("find({},{},{})={}", query, vehicleId, pageable, result);
         return result.map(rl -> repairLogMapper.mapToRepairLogSo(rl));
     }
@@ -66,7 +70,7 @@ public class RepairLogApiService {
         RepairLog repairLog = repairLogMapper.mapToRepairLog(repairLogCreateSo);
         Vehicle vehicle = vehicleRepository.findById(repairLogCreateSo.vehicleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
         repairLog.setVehicle(vehicle);
-        repairLog = repairLogRepository.save(repairLog);
+        repairLog = repairLogRepository.saveAndFlush(repairLog);
         LOGGER.debug("create({})={}", repairLogCreateSo, repairLog);
         return repairLogMapper.mapToRepairLogSo(repairLog);
     }
@@ -80,7 +84,7 @@ public class RepairLogApiService {
             Vehicle vehicle = vehicleRepository.findById(repairLogUpdateSo.vehicleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
             repairLog.setVehicle(vehicle);
         }
-        repairLog = repairLogRepository.save(repairLog);
+        repairLog = repairLogRepository.saveAndFlush(repairLog);
         return repairLogMapper.mapToRepairLogSo(repairLog);
     }
 

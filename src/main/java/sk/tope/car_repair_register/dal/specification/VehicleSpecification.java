@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
+import sk.tope.car_repair_register.component.TokenHandler;
 import sk.tope.car_repair_register.dal.domain.Customer;
 import sk.tope.car_repair_register.dal.domain.Vehicle;
 import sk.tope.car_repair_register.utils.SpecificationUtils;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public record VehicleSpecification(String query, Long customerId) implements Specification<Vehicle> {
+public record VehicleSpecification(String query, Long customerId, TokenHandler tokenHandler) implements Specification<Vehicle> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleSpecification.class);
 
@@ -29,6 +30,7 @@ public record VehicleSpecification(String query, Long customerId) implements Spe
         if (customerId != null) {
             predicates.add(criteriaBuilder.equal(customerJoin.get("id"), customerId));
         }
+        predicates.add(criteriaBuilder.equal(root.get("creator"), tokenHandler.getSubject()));
         if (StringUtils.hasLength(query)) {
             Arrays.stream(query.split(" ")).map(s -> s.trim()).filter(StringUtils::hasText).forEach(s -> {
                 List<Predicate> orPredicates = new ArrayList<>();

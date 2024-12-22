@@ -7,3 +7,6 @@ realm: evidence
 client: evidence / evidence-public
 username: test
 password: test
+
+./mvnw spring-boot:build-image -DskipTests
+mvn clean integration-test

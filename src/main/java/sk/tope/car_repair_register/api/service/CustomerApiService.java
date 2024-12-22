@@ -13,7 +13,9 @@ import sk.tope.car_repair_register.api.service.so.CustomerCreateSo;
 import sk.tope.car_repair_register.api.service.so.CustomerSo;
 import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
 import sk.tope.car_repair_register.bundle.ErrorBundle;
+import sk.tope.car_repair_register.component.TokenHandler;
 import sk.tope.car_repair_register.dal.domain.Customer;
+import sk.tope.car_repair_register.dal.domain.TechnicalAttributes;
 import sk.tope.car_repair_register.dal.repository.CustomerRepository;
 import sk.tope.car_repair_register.dal.specification.CustomerSpecification;
 import sk.tope.car_repair_register.mapper.CustomerMapper;
@@ -27,6 +29,13 @@ public class CustomerApiService {
 
     private CustomerRepository customerRepository;
 
+    private static TokenHandler tokenHandler;
+
+    @Autowired
+    public void setTokenHandler(TokenHandler tokenHandler) {
+        this.tokenHandler = tokenHandler;
+    }
+
     @Autowired
     public void setCustomerMapper(CustomerMapper customerMapper) {
         this.customerMapper = customerMapper;
@@ -39,7 +48,7 @@ public class CustomerApiService {
 
     public Page<CustomerSo> find(String query, Pageable pageable) {
         LOGGER.debug("find({},{})", query, pageable);
-        Page<Customer> result = customerRepository.findAll(new CustomerSpecification(query), pageable);
+        Page<Customer> result = customerRepository.findAll(new CustomerSpecification(query, tokenHandler), pageable);
         LOGGER.debug("find({},{})={}", query, pageable, result);
         return result.map(c -> customerMapper.mapToCustomerSo(c));
     }
@@ -55,7 +64,7 @@ public class CustomerApiService {
     public CustomerSo create(CustomerCreateSo customerCreateSo) {
         LOGGER.debug("create({})", customerCreateSo);
         Customer customer = customerMapper.mapToCustomer(customerCreateSo);
-        customer = customerRepository.save(customer);
+        customer = customerRepository.saveAndFlush(customer);
         LOGGER.debug("create({})={}", customerCreateSo, customer);
         return customerMapper.mapToCustomerSo(customer);
     }
@@ -65,7 +74,8 @@ public class CustomerApiService {
         LOGGER.debug("update({})", customerUpdateSo);
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
         customerMapper.mapTo(customer, customerUpdateSo);
-        customer = customerRepository.save(customer);
+        customer = customerRepository.saveAndFlush(customer);
+        LOGGER.debug("update({})={}", customerUpdateSo, customer);
         return customerMapper.mapToCustomerSo(customer);
     }
 
