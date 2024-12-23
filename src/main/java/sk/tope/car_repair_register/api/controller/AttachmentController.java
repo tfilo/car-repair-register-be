@@ -1,6 +1,8 @@
 package sk.tope.car_repair_register.api.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import sk.tope.car_repair_register.api.service.AttachmentApiService;
 import sk.tope.car_repair_register.api.service.so.AttachmentFileSo;
 import sk.tope.car_repair_register.api.service.so.AttachmentSo;
+import sk.tope.car_repair_register.api.service.so.ErrorMessageSo;
 
 import java.io.IOException;
 
@@ -38,14 +41,22 @@ public class AttachmentController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
-    @GetMapping(path = "/")
-    public ResponseEntity<Resource> downloadAttachment(@RequestParam Long id) {
-        LOGGER.debug("getAttachmentFile({})", id);
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Resource> downloadAttachmentById(@PathVariable("id") Long id) {
+        LOGGER.debug("downloadAttachmentById({})", id);
         AttachmentFileSo attachmentFileSo = attachmentApiService.download(id);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(attachmentFileSo.mimeType()))
@@ -58,11 +69,21 @@ public class AttachmentController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "created"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "413", description = "content too large"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "413", description = "content too large", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AttachmentSo> uploadAttachment(@NotNull @RequestParam Long repairLogId,
@@ -77,14 +98,22 @@ public class AttachmentController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @DeleteMapping(value = "/{id}")
-    public void deleteAttachment(@PathVariable("id") Long id) {
-        LOGGER.debug("deleteAttachment({})", id);
+    public void deleteAttachmentById(@PathVariable("id") Long id) {
+        LOGGER.debug("deleteAttachmentById({})", id);
         attachmentApiService.delete(id);
     }
 }

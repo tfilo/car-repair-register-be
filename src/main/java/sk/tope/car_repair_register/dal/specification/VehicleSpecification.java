@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public record VehicleSpecification(String query, Long customerId, TokenHandler tokenHandler) implements Specification<Vehicle> {
+public record VehicleSpecification(String query, Long customerId,
+                                   TokenHandler tokenHandler) implements Specification<Vehicle> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleSpecification.class);
 
@@ -31,6 +32,7 @@ public record VehicleSpecification(String query, Long customerId, TokenHandler t
             predicates.add(criteriaBuilder.equal(customerJoin.get("id"), customerId));
         }
         predicates.add(criteriaBuilder.equal(root.get("creator"), tokenHandler.getSubject()));
+        predicates.add(criteriaBuilder.equal(customerJoin.get("creator"), tokenHandler.getSubject()));
         if (StringUtils.hasLength(query)) {
             Arrays.stream(query.split(" ")).map(s -> s.trim()).filter(StringUtils::hasText).forEach(s -> {
                 List<Predicate> orPredicates = new ArrayList<>();

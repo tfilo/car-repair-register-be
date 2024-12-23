@@ -62,14 +62,14 @@ public class Vehicle extends TechnicalAttributes {
     @Column(name = "year_of_manufacture")
     private Integer yearOfManufacture;
 
-    @OneToMany(
+/*    @OneToMany(
             mappedBy = "vehicle",
             fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST,
             orphanRemoval = true
     )
     @OrderBy("repairDate DESC")
-    private List<RepairLog> repairs;
+    private List<RepairLog> repairs;*/
 
     @Override
     public boolean equals(Object o) {
@@ -179,7 +179,7 @@ public class Vehicle extends TechnicalAttributes {
         this.yearOfManufacture = yearOfManufacture;
     }
 
-    public List<RepairLog> getRepairs() {
+/*    public List<RepairLog> getRepairs() {
         if (Objects.isNull(repairs)) {
             repairs = new ArrayList<>();
         }
@@ -188,7 +188,7 @@ public class Vehicle extends TechnicalAttributes {
 
     public void setRepairs(List<RepairLog> repairs) {
         this.repairs = repairs;
-    }
+    }*/
 
     @Override
     public String toString() {

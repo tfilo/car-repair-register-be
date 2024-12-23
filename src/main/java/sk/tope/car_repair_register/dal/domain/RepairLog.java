@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +32,7 @@ public class RepairLog extends TechnicalAttributes {
 
     @NotNull
     @Column(name = "repair_date")
-    private LocalDateTime repairDate;
+    private LocalDate repairDate;
 
     @NotNull
     @ManyToOne
@@ -76,11 +76,11 @@ public class RepairLog extends TechnicalAttributes {
         this.content = content;
     }
 
-    public LocalDateTime getRepairDate() {
+    public LocalDate getRepairDate() {
         return repairDate;
     }
 
-    public void setRepairDate(LocalDateTime repairDate) {
+    public void setRepairDate(LocalDate repairDate) {
         this.repairDate = repairDate;
     }
 

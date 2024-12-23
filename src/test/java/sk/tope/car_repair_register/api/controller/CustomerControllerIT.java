@@ -1,6 +1,5 @@
 package sk.tope.car_repair_register.api.controller;
 
-import common.TestBase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import sk.tope.car_repair_register.api.service.so.CustomerCreateSo;
 import sk.tope.car_repair_register.api.service.so.CustomerSo;
 import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
+import sk.tope.car_repair_register.common.TestBase;
 
 import java.time.LocalDateTime;
 
@@ -144,11 +144,21 @@ public class CustomerControllerIT extends TestBase {
 
     @Test
     public void testDeleteCustomer() throws Exception {
-        mockMvc.perform(delete("/customer/1000")
+        mockMvc.perform(delete("/customer/1001")
                         .with(getUser()))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/customer/1000")
+        mockMvc.perform(get("/customer/1001")
+                        .with(getUser()))
+                .andExpect(status().isNotFound());
+
+        // vehicles of customer should be deleted too
+        mockMvc.perform(get("/vehicle/1001")
+                        .with(getUser()))
+                .andExpect(status().isNotFound());
+
+        // vehicles of customer should be deleted too
+        mockMvc.perform(get("/vehicle/1002")
                         .with(getUser()))
                 .andExpect(status().isNotFound());
 

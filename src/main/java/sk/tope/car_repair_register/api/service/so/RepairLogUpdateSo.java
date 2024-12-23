@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Schema(name = "RepairLogUpdate")
 public record RepairLogUpdateSo(
@@ -20,6 +20,6 @@ public record RepairLogUpdateSo(
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull
         @PastOrPresent
-        LocalDateTime repairDate
+        LocalDate repairDate
 ) {
 }

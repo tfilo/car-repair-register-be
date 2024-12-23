@@ -15,7 +15,6 @@ import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
 import sk.tope.car_repair_register.bundle.ErrorBundle;
 import sk.tope.car_repair_register.component.TokenHandler;
 import sk.tope.car_repair_register.dal.domain.Customer;
-import sk.tope.car_repair_register.dal.domain.TechnicalAttributes;
 import sk.tope.car_repair_register.dal.repository.CustomerRepository;
 import sk.tope.car_repair_register.dal.specification.CustomerSpecification;
 import sk.tope.car_repair_register.mapper.CustomerMapper;
@@ -24,12 +23,9 @@ import sk.tope.car_repair_register.mapper.CustomerMapper;
 public class CustomerApiService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerApiService.class);
-
-    private CustomerMapper customerMapper;
-
-    private CustomerRepository customerRepository;
-
     private static TokenHandler tokenHandler;
+    private CustomerMapper customerMapper;
+    private CustomerRepository customerRepository;
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {

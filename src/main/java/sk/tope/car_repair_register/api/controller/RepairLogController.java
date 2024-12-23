@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.tope.car_repair_register.api.service.RepairLogApiService;
+import sk.tope.car_repair_register.api.service.so.ErrorMessageSo;
 import sk.tope.car_repair_register.api.service.so.RepairLogCreateSo;
 import sk.tope.car_repair_register.api.service.so.RepairLogSo;
 import sk.tope.car_repair_register.api.service.so.RepairLogUpdateSo;
@@ -40,10 +41,18 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<RepairLogSo> getRepairLogById(@PathVariable("id") Long id) {
@@ -63,10 +72,18 @@ public class RepairLogController {
             })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @GetMapping
     public ResponseEntity<Page<RepairLogSo>> findRepairLogs(@RequestParam(value = "query", required = false) String query, @RequestParam(value = "vehicleId", required = false) Long vehicleId, @Parameter(hidden = true) Pageable pageable) {
@@ -79,10 +96,21 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "created"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "409", description = "conflict", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @PostMapping
     public ResponseEntity<RepairLogSo> createRepairLog(@Valid @RequestBody RepairLogCreateSo repairLogCreateSo) {
@@ -95,10 +123,21 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "409", description = "conflict", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<RepairLogSo> updateRepairLog(@PathVariable("id") Long id, @Valid @RequestBody RepairLogUpdateSo repairLogUpdateSo) {
@@ -111,14 +150,22 @@ public class RepairLogController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @DeleteMapping(value = "/{id}")
-    public void deleteRepairLog(@PathVariable("id") Long id) {
-        LOGGER.debug("deleteRepairLog({})", id);
+    public void deleteRepairLogById(@PathVariable("id") Long id) {
+        LOGGER.debug("deleteRepairLogById({})", id);
         repairLogApiService.delete(id);
     }
 }

@@ -3,6 +3,7 @@ package sk.tope.car_repair_register.api.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -70,8 +71,13 @@ public class VehicleApiService {
         Vehicle vehicle = vehicleMapper.mapToVehicle(vehicleCreateSo);
         Customer customer = customerRepository.findById(vehicleCreateSo.customerId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
         vehicle.setCustomer(customer);
-        vehicle = vehicleRepository.saveAndFlush(vehicle);
-        LOGGER.debug("create({})={}", vehicleCreateSo, vehicle);
+        try {
+            vehicle = vehicleRepository.saveAndFlush(vehicle);
+            LOGGER.debug("create({})={}", vehicleCreateSo, vehicle);
+        } catch (DataIntegrityViolationException dive) {
+            LOGGER.error("create({})= {}", vehicleCreateSo, dive.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.VEHICLE_ALREADY_EXISTS.name());
+        }
         return vehicleMapper.mapToVehicleSo(vehicle);
     }
 
@@ -84,7 +90,13 @@ public class VehicleApiService {
             Customer customer = customerRepository.findById(vehicleUpdateSo.customerId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
             vehicle.setCustomer(customer);
         }
-        vehicle = vehicleRepository.saveAndFlush(vehicle);
+        try {
+            vehicle = vehicleRepository.saveAndFlush(vehicle);
+            LOGGER.debug("update({})={}", vehicleUpdateSo, vehicle);
+        } catch (DataIntegrityViolationException dive) {
+            LOGGER.error("update({})= {}", vehicleUpdateSo, dive.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.VEHICLE_ALREADY_EXISTS.name());
+        }
         return vehicleMapper.mapToVehicleSo(vehicle);
     }
 

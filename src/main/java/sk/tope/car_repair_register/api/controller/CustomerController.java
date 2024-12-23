@@ -21,6 +21,7 @@ import sk.tope.car_repair_register.api.service.CustomerApiService;
 import sk.tope.car_repair_register.api.service.so.CustomerCreateSo;
 import sk.tope.car_repair_register.api.service.so.CustomerSo;
 import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
+import sk.tope.car_repair_register.api.service.so.ErrorMessageSo;
 
 @Tag(name = "customer")
 @RestController
@@ -40,10 +41,18 @@ public class CustomerController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<CustomerSo> getCustomerById(@PathVariable("id") Long id) {
@@ -63,10 +72,18 @@ public class CustomerController {
             })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @GetMapping
     public ResponseEntity<Page<CustomerSo>> findCustomers(@RequestParam(value = "query", required = false) String query, @Parameter(hidden = true) Pageable pageable) {
@@ -79,9 +96,15 @@ public class CustomerController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "created"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @PostMapping
     public ResponseEntity<CustomerSo> createCustomer(@Valid @RequestBody CustomerCreateSo customerCreateSo) {
@@ -94,10 +117,18 @@ public class CustomerController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<CustomerSo> updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerUpdateSo customerUpdateSo) {
@@ -110,14 +141,22 @@ public class CustomerController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "ok"),
-            @ApiResponse(responseCode = "401", description = "unauthorized"),
-            @ApiResponse(responseCode = "403", description = "forbidden"),
-            @ApiResponse(responseCode = "404", description = "not found"),
-            @ApiResponse(responseCode = "500", description = "internal server error")
+            @ApiResponse(responseCode = "401", description = "unauthorized", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "403", description = "forbidden", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "not found", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "internal server error", content = {
+                    @Content(schema = @Schema(implementation = ErrorMessageSo.class))
+            }),
     })
     @DeleteMapping(value = "/{id}")
-    public void deleteCustomer(@PathVariable("id") Long id) {
-        LOGGER.debug("deleteCustomer({})", id);
+    public void deleteCustomerById(@PathVariable("id") Long id) {
+        LOGGER.debug("deleteCustomerById({})", id);
         customerApiService.delete(id);
     }
 

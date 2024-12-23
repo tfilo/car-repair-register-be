@@ -16,7 +16,7 @@ public interface CustomerMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "vehicles", ignore = true)
+            //@Mapping(target = "vehicles", ignore = true)
     })
     Customer mapToCustomer(CustomerCreateSo customerCreateSo);
 
@@ -28,7 +28,7 @@ public interface CustomerMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "vehicles", ignore = true)
+            //@Mapping(target = "vehicles", ignore = true)
     })
     void mapTo(@MappingTarget Customer customer, CustomerUpdateSo customerUpdateSo);
 }

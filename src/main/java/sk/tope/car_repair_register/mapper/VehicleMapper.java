@@ -16,7 +16,7 @@ public interface VehicleMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "repairs", ignore = true),
+            //@Mapping(target = "repairs", ignore = true),
             @Mapping(target = "customer", ignore = true)
     })
     Vehicle mapToVehicle(VehicleCreateSo vehicleCreateSo);
@@ -29,7 +29,7 @@ public interface VehicleMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            @Mapping(target = "repairs", ignore = true),
+            //@Mapping(target = "repairs", ignore = true),
             @Mapping(target = "customer", ignore = true)
     })
     void mapTo(@MappingTarget Vehicle vehicle, VehicleUpdateSo vehicleUpdateSo);

@@ -3,6 +3,7 @@ package sk.tope.car_repair_register.api.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -70,8 +71,13 @@ public class RepairLogApiService {
         RepairLog repairLog = repairLogMapper.mapToRepairLog(repairLogCreateSo);
         Vehicle vehicle = vehicleRepository.findById(repairLogCreateSo.vehicleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
         repairLog.setVehicle(vehicle);
-        repairLog = repairLogRepository.saveAndFlush(repairLog);
-        LOGGER.debug("create({})={}", repairLogCreateSo, repairLog);
+        try {
+            repairLog = repairLogRepository.saveAndFlush(repairLog);
+            LOGGER.debug("create({})={}", repairLogCreateSo, repairLog);
+        } catch (DataIntegrityViolationException dive) {
+            LOGGER.error("create({})= {}", repairLogCreateSo, dive.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.REPAIR_LOG_ALREADY_EXISTS.name());
+        }
         return repairLogMapper.mapToRepairLogSo(repairLog);
     }
 
@@ -84,7 +90,13 @@ public class RepairLogApiService {
             Vehicle vehicle = vehicleRepository.findById(repairLogUpdateSo.vehicleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
             repairLog.setVehicle(vehicle);
         }
-        repairLog = repairLogRepository.saveAndFlush(repairLog);
+        try {
+            repairLog = repairLogRepository.saveAndFlush(repairLog);
+            LOGGER.debug("update({})={}", repairLogUpdateSo, repairLog);
+        } catch (DataIntegrityViolationException dive) {
+            LOGGER.error("update({})= {}", repairLogUpdateSo, dive.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.REPAIR_LOG_ALREADY_EXISTS.name());
+        }
         return repairLogMapper.mapToRepairLogSo(repairLog);
     }
 

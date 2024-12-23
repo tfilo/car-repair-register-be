@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public record RepairLogSpecification(String query, Long vehicleId, TokenHandler tokenHandler) implements Specification<RepairLog> {
+public record RepairLogSpecification(String query, Long vehicleId,
+                                     TokenHandler tokenHandler) implements Specification<RepairLog> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RepairLogSpecification.class);
 
@@ -33,6 +34,8 @@ public record RepairLogSpecification(String query, Long vehicleId, TokenHandler 
             predicates.add(criteriaBuilder.equal(vehicleJoin.get("id"), vehicleId));
         }
         predicates.add(criteriaBuilder.equal(root.get("creator"), tokenHandler.getSubject()));
+        predicates.add(criteriaBuilder.equal(vehicleJoin.get("creator"), tokenHandler.getSubject()));
+        predicates.add(criteriaBuilder.equal(customerJoin.get("creator"), tokenHandler.getSubject()));
         if (StringUtils.hasLength(query)) {
             Arrays.stream(query.split(" ")).map(s -> s.trim()).filter(StringUtils::hasText).forEach(s -> {
                 List<Predicate> orPredicates = new ArrayList<>();

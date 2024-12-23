@@ -58,7 +58,7 @@ CREATE TABLE repair_log
     modified_at TIMESTAMP WITHOUT TIME ZONE,
     deleted_at  TIMESTAMP WITHOUT TIME ZONE,
     content     VARCHAR(5000) collate "sk-SK-x-icu" NOT NULL,
-    repair_date TIMESTAMP WITHOUT TIME ZONE         NOT NULL,
+    repair_date DATE                                NOT NULL,
     vehicle_id  BIGINT                              NOT NULL,
     CONSTRAINT pk_repair_log PRIMARY KEY (id)
 );
