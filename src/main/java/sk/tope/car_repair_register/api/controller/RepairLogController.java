@@ -18,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.tope.car_repair_register.api.service.RepairLogApiService;
-import sk.tope.car_repair_register.api.service.so.ErrorMessageSo;
-import sk.tope.car_repair_register.api.service.so.RepairLogCreateSo;
-import sk.tope.car_repair_register.api.service.so.RepairLogSo;
-import sk.tope.car_repair_register.api.service.so.RepairLogUpdateSo;
+import sk.tope.car_repair_register.api.service.so.*;
 
 @Tag(name = "repairLog")
 @RestController
@@ -71,7 +68,9 @@ public class RepairLogController {
                     )
             })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "ok"),
+            @ApiResponse(responseCode = "200", description = "ok", content = {
+                    @Content(schema = @Schema(implementation = RepairLogPagedModel.class))
+            }),
             @ApiResponse(responseCode = "401", description = "unauthorized", content = {
                     @Content(schema = @Schema(implementation = ErrorMessageSo.class))
             }),

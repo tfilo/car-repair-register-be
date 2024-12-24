@@ -18,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.tope.car_repair_register.api.service.VehicleApiService;
-import sk.tope.car_repair_register.api.service.so.ErrorMessageSo;
-import sk.tope.car_repair_register.api.service.so.VehicleCreateSo;
-import sk.tope.car_repair_register.api.service.so.VehicleSo;
-import sk.tope.car_repair_register.api.service.so.VehicleUpdateSo;
+import sk.tope.car_repair_register.api.service.so.*;
 
 @Tag(name = "vehicle")
 @RestController
@@ -71,7 +68,9 @@ public class VehicleController {
                     )
             })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "ok"),
+            @ApiResponse(responseCode = "200", description = "ok", content = {
+                    @Content(schema = @Schema(implementation = VehiclePagedModel.class))
+            }),
             @ApiResponse(responseCode = "401", description = "unauthorized", content = {
                     @Content(schema = @Schema(implementation = ErrorMessageSo.class))
             }),
