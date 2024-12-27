@@ -60,7 +60,7 @@ public class CustomerController {
 
     @Operation(
             description = "Find customers by query string and pageable.",
-            parameters = {
+           parameters = {
                     @Parameter(in = ParameterIn.QUERY, name = "page", content = @Content(schema = @Schema(type = "integer"))),
                     @Parameter(in = ParameterIn.QUERY, name = "size", content = @Content(schema = @Schema(type = "integer"))),
                     @Parameter(in = ParameterIn.QUERY, name = "sort",
