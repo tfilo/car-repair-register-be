@@ -26,6 +26,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        LOGGER.error("RestResponseEntityExceptionHandler - handleMethodArgumentNotValid({},{},{},{})", ex, headers, status, request);
         List<FieldErrorSo> errors = ex.getBindingResult().getFieldErrors().stream()
                 .sorted(Comparator.comparing(org.springframework.validation.FieldError::getField))
                 .map(error -> new FieldErrorSo(error.getField(), error.getDefaultMessage()))
@@ -36,11 +37,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(ResponseStatusException.class)
     protected ResponseEntity<?> handleResponseStatusException(ResponseStatusException ex, WebRequest request) {
+        LOGGER.error("RestResponseEntityExceptionHandler - handleResponseStatusException({},{})", ex, request);
         return new ResponseEntity<>(new ErrorMessageSo(HttpStatus.valueOf(ex.getStatusCode().value()), ex.getReason(), null), ex.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> handleGlobalException(Exception ex, WebRequest request) {
+        LOGGER.error("RestResponseEntityExceptionHandler - handleGlobalException({},{})", ex, request);
         return new ResponseEntity<>(new ErrorMessageSo(HttpStatus.INTERNAL_SERVER_ERROR, ErrorBundle.UNEXPECTED_ERROR.name(), null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 import sk.tope.car_repair_register.api.service.so.AttachmentSo;
 import sk.tope.car_repair_register.dal.domain.Attachment;
 
+import java.io.IOException;
+
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         collectionMappingStrategy = CollectionMappingStrategy.ACCESSOR_ONLY,
         uses = {FileMapper.class},
@@ -23,7 +25,7 @@ public interface AttachmentMapper {
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
     })
-    Attachment mapFileToEntity(MultipartFile multipartFile);
+    Attachment mapFileToEntity(MultipartFile multipartFile) throws IOException;
 
     AttachmentSo mapToAttachmentSo(Attachment attachment);
 }
