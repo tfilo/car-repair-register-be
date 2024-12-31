@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -32,14 +34,14 @@ public class Customer extends TechnicalAttributes {
     @Column(name = "email", length = 320)
     private String email;
 
-/*    @OneToMany(
+    @OneToMany(
             mappedBy = "customer",
             fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST,
             orphanRemoval = true
     )
     @OrderBy("registrationPlate ASC")
-    private List<Vehicle> vehicles;*/
+    private List<Vehicle> vehicles;
 
     @Override
     public boolean equals(Object o) {
@@ -93,7 +95,7 @@ public class Customer extends TechnicalAttributes {
         this.email = email;
     }
 
-/*    public List<Vehicle> getVehicles() {
+    public List<Vehicle> getVehicles() {
         if (Objects.isNull(vehicles)) {
             vehicles = new ArrayList<>();
         }
@@ -102,7 +104,7 @@ public class Customer extends TechnicalAttributes {
 
     public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
-    }*/
+    }
 
     @Override
     public String toString() {
