@@ -7,6 +7,7 @@ import sk.tope.car_repair_register.api.service.so.RepairLogUpdateSo;
 import sk.tope.car_repair_register.dal.domain.RepairLog;
 
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {StringTrimmer.class},
         componentModel = "spring")
 public interface RepairLogMapper {
 

@@ -27,8 +27,9 @@ public class RepairLogControllerIT extends TestBase {
     @Test
     public void testCreateRepairLog() throws Exception {
         RepairLogCreateSo so = new RepairLogCreateSo(
-                "Lorem ipsum dolor sit amet",
+                "  Lorem ipsum dolor sit amet   ",
                 1001L,
+                100,
                 LocalDate.of(2020, 1, 1)
         );
         MvcResult mvcResult = mockMvc.perform(post("/repair-log")
@@ -40,9 +41,10 @@ public class RepairLogControllerIT extends TestBase {
         assertThat(mvcResult.getResponse().getContentAsString()).isNotNull();
         RepairLogSo result = asJsonObject(mvcResult.getResponse().getContentAsString(), RepairLogSo.class);
         assertThat(result.id()).isNotNull();
-        assertThat(result.content()).isEqualTo(so.content());
+        assertThat(result.content()).isEqualTo(so.content().trim());
         assertThat(result.vehicle().id()).isEqualTo(so.vehicleId());
         assertThat(result.repairDate()).isEqualTo(so.repairDate());
+        assertThat(result.odometer()).isEqualTo(so.odometer());
         assertThat(result.created()).isNotNull();
         assertThat(result.modified()).isNull();
 
@@ -53,6 +55,7 @@ public class RepairLogControllerIT extends TestBase {
                 .andExpect(status().isConflict());
 
         RepairLogCreateSo emptySo = new RepairLogCreateSo(
+                null,
                 null,
                 null,
                 null
@@ -172,8 +175,9 @@ public class RepairLogControllerIT extends TestBase {
     @Test
     public void testUpdateRepairLog() throws Exception {
         RepairLogUpdateSo fullSo = new RepairLogUpdateSo(
-                "Lorem ipsum dolor sit amet..",
+                "  Lorem ipsum dolor sit amet..",
                 1001L,
+                123,
                 LocalDate.of(2020, 1, 1)
         );
         MvcResult mvcResult = mockMvc.perform(put("/repair-log/1003")
@@ -185,8 +189,9 @@ public class RepairLogControllerIT extends TestBase {
         assertThat(mvcResult.getResponse().getContentAsString()).isNotNull();
         RepairLogSo result = asJsonObject(mvcResult.getResponse().getContentAsString(), RepairLogSo.class);
         assertThat(result.id()).isEqualTo(1003);
-        assertThat(result.content()).isEqualTo(fullSo.content());
+        assertThat(result.content()).isEqualTo(fullSo.content().trim());
         assertThat(result.repairDate()).isEqualTo(fullSo.repairDate());
+        assertThat(result.odometer()).isEqualTo(fullSo.odometer());
         assertThat(result.vehicle().customer().id()).isEqualTo(1001);
         assertThat(result.vehicle().customer().name()).isEqualTo("Second");
         assertThat(result.vehicle().customer().surname()).isEqualTo("Person");
@@ -216,6 +221,7 @@ public class RepairLogControllerIT extends TestBase {
                 .andExpect(status().isNotFound());
 
         RepairLogUpdateSo emptySo = new RepairLogUpdateSo(
+                null,
                 null,
                 null,
                 null

@@ -7,6 +7,7 @@ import sk.tope.car_repair_register.api.service.so.CustomerUpdateSo;
 import sk.tope.car_repair_register.dal.domain.Customer;
 
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {StringTrimmer.class},
         componentModel = "spring")
 public interface CustomerMapper {
 
@@ -16,7 +17,7 @@ public interface CustomerMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            //@Mapping(target = "vehicles", ignore = true)
+            @Mapping(target = "vehicles", ignore = true)
     })
     Customer mapToCustomer(CustomerCreateSo customerCreateSo);
 
@@ -28,7 +29,7 @@ public interface CustomerMapper {
             @Mapping(target = "created", ignore = true),
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
-            //@Mapping(target = "vehicles", ignore = true)
+            @Mapping(target = "vehicles", ignore = true)
     })
     void mapTo(@MappingTarget Customer customer, CustomerUpdateSo customerUpdateSo);
 }

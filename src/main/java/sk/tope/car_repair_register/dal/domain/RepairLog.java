@@ -34,6 +34,9 @@ public class RepairLog extends TechnicalAttributes {
     @Column(name = "repair_date")
     private LocalDate repairDate;
 
+    @Column(name = "odometer")
+    private Integer odometer;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
@@ -84,6 +87,14 @@ public class RepairLog extends TechnicalAttributes {
         this.repairDate = repairDate;
     }
 
+    public Integer getOdometer() {
+        return odometer;
+    }
+
+    public void setOdometer(Integer odometer) {
+        this.odometer = odometer;
+    }
+
     public Vehicle getVehicle() {
         return vehicle;
     }
@@ -109,6 +120,7 @@ public class RepairLog extends TechnicalAttributes {
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", repairDate=" + repairDate +
+                ", odometer=" + odometer +
                 ", vehicle=" + vehicle +
                 ", created=" + super.getCreated() +
                 ", modified=" + super.getModified() +

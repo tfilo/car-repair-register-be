@@ -26,7 +26,7 @@ public class VehicleControllerIT extends TestBase {
     @Test
     public void testCreateVehicle() throws Exception {
         VehicleCreateSo minimalSo = new VehicleCreateSo(
-                "XX123YY",
+                "  XX123YY  ",
                 1000L,
                 null,
                 null,
@@ -47,7 +47,7 @@ public class VehicleControllerIT extends TestBase {
         assertThat(minimalMvcResult.getResponse().getContentAsString()).isNotNull();
         VehicleSo minimalSoResult = asJsonObject(minimalMvcResult.getResponse().getContentAsString(), VehicleSo.class);
         assertThat(minimalSoResult.id()).isNotNull();
-        assertThat(minimalSoResult.registrationPlate()).isEqualTo(minimalSo.registrationPlate());
+        assertThat(minimalSoResult.registrationPlate()).isEqualTo(minimalSo.registrationPlate().trim());
         assertThat(minimalSoResult.customer().id()).isEqualTo(minimalSo.customerId());
         assertThat(minimalSoResult.created()).isNotNull();
         assertThat(minimalSoResult.modified()).isNull();
@@ -68,16 +68,16 @@ public class VehicleControllerIT extends TestBase {
                 .andExpect(status().isConflict());
 
         VehicleCreateSo fullSo = new VehicleCreateSo(
-                "XX123YY",
+                "  Xz123yy ",
                 1001L,
-                "2HHMB4640XX900492",
-                "XX4444ZZ",
-                "HEVC",
+                " 2hhMB4640XX900492 ",
+                " Xx4444zz ",
+                " HEVC ",
                 77,
                 1500,
                 15,
-                "New",
-                "Model",
+                " New ",
+                " Model  ",
                 2024
         );
         MvcResult fullMvcResult = mockMvc.perform(post("/vehicle")
@@ -89,18 +89,18 @@ public class VehicleControllerIT extends TestBase {
         assertThat(fullMvcResult.getResponse().getContentAsString()).isNotNull();
         VehicleSo fullSoResult = asJsonObject(fullMvcResult.getResponse().getContentAsString(), VehicleSo.class);
         assertThat(fullSoResult.id()).isNotNull();
-        assertThat(fullSoResult.registrationPlate()).isEqualTo(fullSo.registrationPlate());
+        assertThat(fullSoResult.registrationPlate()).isEqualTo(fullSo.registrationPlate().trim().toUpperCase());
         assertThat(fullSoResult.customer().id()).isEqualTo(fullSo.customerId());
         assertThat(fullSoResult.created()).isNotNull();
         assertThat(fullSoResult.modified()).isNull();
-        assertThat(fullSoResult.vin()).isEqualTo(fullSo.vin());
-        assertThat(fullSoResult.engineCode()).isEqualTo(fullSo.engineCode());
-        assertThat(fullSoResult.fuelType()).isEqualTo(fullSo.fuelType());
+        assertThat(fullSoResult.vin()).isEqualTo(fullSo.vin().trim().toUpperCase());
+        assertThat(fullSoResult.engineCode()).isEqualTo(fullSo.engineCode().trim().toUpperCase());
+        assertThat(fullSoResult.fuelType()).isEqualTo(fullSo.fuelType().trim());
         assertThat(fullSoResult.enginePower()).isEqualTo(fullSo.enginePower());
         assertThat(fullSoResult.engineVolume()).isEqualTo(fullSo.engineVolume());
         assertThat(fullSoResult.batteryCapacity()).isEqualTo(fullSo.batteryCapacity());
-        assertThat(fullSoResult.brand()).isEqualTo(fullSo.brand());
-        assertThat(fullSoResult.model()).isEqualTo(fullSo.model());
+        assertThat(fullSoResult.brand()).isEqualTo(fullSo.brand().trim());
+        assertThat(fullSoResult.model()).isEqualTo(fullSo.model().trim());
         assertThat(fullSoResult.yearOfManufacture()).isEqualTo(fullSo.yearOfManufacture());
 
         VehicleCreateSo emptySo = new VehicleCreateSo(
@@ -128,6 +128,27 @@ public class VehicleControllerIT extends TestBase {
                 .andExpect(jsonPath("$.fieldError[1].fieldName").value("registrationPlate"))
                 .andExpect(jsonPath("$.fieldError[1].errorMessage").value("must not be blank"))
                 .andExpect(status().isBadRequest());
+
+        VehicleCreateSo duplicateSo = new VehicleCreateSo(
+                " xZ123yY ",
+                1001L,
+                " 2hhMB4640XX900492 ",
+                " Xx4444zz ",
+                " HEVC ",
+                77,
+                1500,
+                15,
+                " New ",
+                " Model  ",
+                2024
+        );
+        mockMvc.perform(post("/vehicle")
+                        .content(asJsonString(fullSo))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .with(getUser()))
+                .andExpect(jsonPath("$.httpStatus").value(HttpStatus.CONFLICT.name()))
+                .andExpect(jsonPath("$.message").value(ErrorBundle.VEHICLE_ALREADY_EXISTS.name()))
+                .andExpect(status().isConflict());
     }
 
     @Test

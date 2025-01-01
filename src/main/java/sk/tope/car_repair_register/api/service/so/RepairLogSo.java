@@ -12,6 +12,7 @@ public record RepairLogSo(
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String content,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) VehicleSo vehicle,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) LocalDate repairDate,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) Integer odometer,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<AttachmentSo> attachments,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) LocalDateTime created,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) LocalDateTime modified

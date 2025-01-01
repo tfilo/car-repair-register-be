@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         collectionMappingStrategy = CollectionMappingStrategy.ACCESSOR_ONLY,
-        uses = {FileMapper.class},
+        uses = {FileMapper.class, StringTrimmer.class},
         componentModel = "spring"
 )
 public interface AttachmentMapper {

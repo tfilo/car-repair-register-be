@@ -53,29 +53,29 @@ INSERT INTO vehicle (id, creator, created_at, modified_at, deleted_at, registrat
 VALUES (1003, 'fbdb4e4a-6e93-4b08-a1e7-0b7bd0852044', '2022-01-06 08:00:00.000000', null, null, 'XX456YY', 1005,
         '2HHMB4640XX900494', 'XX4777', 'EV', 150, null, 76, 'Ligh', 'Ning', 2022);
 
-INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, vehicle_id)
+INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, odometer, vehicle_id)
 VALUES (1000, 'fbdb4e4a-6e93-4b08-a1e7-0b7bd08520a6', '2020-04-04 08:33:00.000000', null, null,
-        '1 This is some content of repair description', '2020-04-04', 1000);
+        '1 This is some content of repair description', '2020-04-04', 123, 1000);
 
-INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, vehicle_id)
+INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, odometer, vehicle_id)
 VALUES (1001, 'fbdb4e4a-6e93-4b08-a1e7-0b7bd08520a6', '2020-04-05 08:33:00.000000', null, '2020-04-05 08:35:00.000000',
-        'This is some content of repair description, of deleted record', '2020-04-05', 1000);
+        'This is some content of repair description, of deleted record', '2020-04-05', 243, 1000);
 
-INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, vehicle_id)
+INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, odometer, vehicle_id)
 VALUES (1005, 'fbdb4e4a-6e93-4b08-a1e7-0b7bd08520a6', '2020-04-05 08:36:00.000000', null, null,
-        '2 This is some content of repair description', '2020-04-05', 1000);
+        '2 This is some content of repair description', '2020-04-05', 42342, 1000);
 
-INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, vehicle_id)
+INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, odometer, vehicle_id)
 VALUES (1002, 'fbdb4e4a-6e93-4b08-a1e7-0b7bd08520a6', '2020-04-06 08:33:00.000000', null, null,
-        '3 This is some content of repair description', '2020-04-06', 1000);
+        '3 This is some content of repair description', '2020-04-06', 232354, 1000);
 
-INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, vehicle_id)
+INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, odometer, vehicle_id)
 VALUES (1003, 'fbdb4e4a-6e93-4b08-a1e7-0b7bd08520a6', '2020-04-07 08:33:00.000000', null, null,
-        '4 This is some content of repair description', '2020-04-07', 1002);
+        '4 This is some content of repair description', '2020-04-07', 232111, 1002);
 
-INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, vehicle_id)
+INSERT INTO repair_log (id, creator, created_at, modified_at, deleted_at, content, repair_date, odometer, vehicle_id)
 VALUES (1004, 'fbdb4e4a-6e93-4b08-a1e7-0b7bd08520a6', '2020-04-08 08:33:00.000000', null, null,
-        '5 This is some content of repair description', '2020-04-08', 1003);
+        '5 This is some content of repair description', '2020-04-08', 140948, 1003);
 
 ALTER SEQUENCE sq_attachment RESTART WITH 2000;
 ALTER SEQUENCE sq_customer RESTART WITH 2000;

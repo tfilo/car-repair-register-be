@@ -24,10 +24,10 @@ public class CustomerControllerIT extends TestBase {
     @Test
     public void testCreateCustomer() throws Exception {
         CustomerCreateSo so = new CustomerCreateSo(
-                "Test",
-                "User",
-                null,
-                null
+                "  Test",
+                " User  ",
+                " 0900000123",
+                " mail@mail.mail  "
         );
         MvcResult mvcResult = mockMvc.perform(post("/customer")
                         .content(asJsonString(so))
@@ -38,10 +38,10 @@ public class CustomerControllerIT extends TestBase {
         assertThat(mvcResult.getResponse().getContentAsString()).isNotNull();
         CustomerSo result = asJsonObject(mvcResult.getResponse().getContentAsString(), CustomerSo.class);
         assertThat(result.id()).isNotNull();
-        assertThat(result.name()).isEqualTo(so.name());
-        assertThat(result.surname()).isEqualTo(so.surname());
-        assertThat(result.mobile()).isEqualTo(so.mobile());
-        assertThat(result.email()).isEqualTo(so.email());
+        assertThat(result.name()).isEqualTo(so.name().trim());
+        assertThat(result.surname()).isEqualTo(so.surname().trim());
+        assertThat(result.mobile()).isEqualTo(so.mobile().trim());
+        assertThat(result.email()).isEqualTo(so.email().trim());
         assertThat(result.created()).isNotNull();
         assertThat(result.modified()).isNull();
     }
@@ -114,10 +114,10 @@ public class CustomerControllerIT extends TestBase {
     @Test
     public void testUpdateCustomer() throws Exception {
         CustomerUpdateSo so = new CustomerUpdateSo(
-                "Test",
-                "User",
-                "111111",
-                "new@mail.com"
+                " Test  ",
+                "   User",
+                "111111   ",
+                "new@mail.com   "
         );
         MvcResult mvcResult = mockMvc.perform(put("/customer/1000")
                         .content(asJsonString(so))
@@ -128,10 +128,10 @@ public class CustomerControllerIT extends TestBase {
         assertThat(mvcResult.getResponse().getContentAsString()).isNotNull();
         CustomerSo result = asJsonObject(mvcResult.getResponse().getContentAsString(), CustomerSo.class);
         assertThat(result.id()).isEqualTo(1000);
-        assertThat(result.name()).isEqualTo(so.name());
-        assertThat(result.surname()).isEqualTo(so.surname());
-        assertThat(result.mobile()).isEqualTo(so.mobile());
-        assertThat(result.email()).isEqualTo(so.email());
+        assertThat(result.name()).isEqualTo(so.name().trim());
+        assertThat(result.surname()).isEqualTo(so.surname().trim());
+        assertThat(result.mobile()).isEqualTo(so.mobile().trim());
+        assertThat(result.email()).isEqualTo(so.email().trim());
         assertThat(result.created()).isNotNull();
         assertThat(result.modified()).isNotNull();
 

@@ -11,6 +11,7 @@ import java.io.IOException;
 
 @Mapper(
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {StringTrimmer.class},
         componentModel = "spring")
 public interface FileMapper {
     @Mappings({
