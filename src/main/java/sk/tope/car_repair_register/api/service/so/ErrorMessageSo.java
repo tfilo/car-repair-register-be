@@ -11,7 +11,7 @@ public record ErrorMessageSo(
         HttpStatus httpStatus,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         String message,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"array", "null"})
         List<FieldErrorSo> fieldError
 ) {
 };

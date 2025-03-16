@@ -9,16 +9,16 @@ public record VehicleSo(
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long id,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String registrationPlate,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) CustomerSo customer,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) String vin,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) String engineCode,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) String fuelType,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) Integer enginePower,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) Integer engineVolume,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) Integer batteryCapacity,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) String brand,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) String model,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) Integer yearOfManufacture,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"}) String vin,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"}) String engineCode,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"}) String fuelType,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"}) Integer enginePower,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"}) Integer engineVolume,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"}) Integer batteryCapacity,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"}) String brand,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"}) String model,
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"}) Integer yearOfManufacture,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED) LocalDateTime created,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true) LocalDateTime modified
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"}) LocalDateTime modified
 ) {
 }

@@ -12,34 +12,34 @@ public record VehicleCreateSo(
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull
         Long customerId,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
         @Size(max = 20)
         String vin,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
         @Size(max = 20)
         String engineCode,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
         @Size(max = 20)
         String fuelType,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"})
         @Min(0)
         @Max(3000)
         Integer enginePower,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"})
         @Min(0)
         @Max(10000)
         Integer engineVolume,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"})
         @Min(0)
         @Max(1000)
         Integer batteryCapacity,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
         @Size(max = 64)
         String brand,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
         @Size(max = 64)
         String model,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"})
         @Min(1900)
         @Max(2100)
         Integer yearOfManufacture

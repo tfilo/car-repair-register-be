@@ -17,7 +17,7 @@ public record RepairLogUpdateSo(
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull
         Long vehicleId,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, nullable = true)
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED, types = {"integer", "null"})
         Integer odometer,
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull
