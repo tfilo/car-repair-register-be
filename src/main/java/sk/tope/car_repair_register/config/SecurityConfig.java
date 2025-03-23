@@ -17,9 +17,9 @@ import org.springframework.web.filter.RequestContextFilter;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        // http.cors(AbstractHttpConfigurer::disable)
+        //        .csrf(AbstractHttpConfigurer::disable)
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(ahr ->
                         ahr.requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
                                 .requestMatchers("/actuator/**").permitAll()
