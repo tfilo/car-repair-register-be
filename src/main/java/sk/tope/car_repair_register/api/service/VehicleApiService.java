@@ -33,7 +33,7 @@ public class VehicleApiService {
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {
-        this.tokenHandler = tokenHandler;
+        VehicleApiService.tokenHandler = tokenHandler;
     }
 
     @Autowired

@@ -46,9 +46,10 @@ public class AttachmentApiService {
         this.repairLogRepository = repairLogRepository;
     }
 
+    @Transactional(readOnly = true)
     public AttachmentFileSo download(Long id) {
         LOGGER.debug("download({})", id);
-        Attachment attachment = attachmentRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.ATTACHMENT_NOT_FOUND.name()));
+        Attachment attachment = attachmentRepository.findByIdWithFile(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.ATTACHMENT_NOT_FOUND.name()));
 
         return new AttachmentFileSo(
                 attachment.getName(),

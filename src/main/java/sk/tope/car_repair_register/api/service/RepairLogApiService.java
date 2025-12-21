@@ -33,7 +33,7 @@ public class RepairLogApiService {
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {
-        this.tokenHandler = tokenHandler;
+        RepairLogApiService.tokenHandler = tokenHandler;
     }
 
     @Autowired

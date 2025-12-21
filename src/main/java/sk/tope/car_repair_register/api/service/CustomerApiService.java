@@ -29,7 +29,7 @@ public class CustomerApiService {
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {
-        this.tokenHandler = tokenHandler;
+        CustomerApiService.tokenHandler = tokenHandler;
     }
 
     @Autowired
