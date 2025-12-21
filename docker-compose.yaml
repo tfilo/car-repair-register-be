@@ -18,7 +18,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.0
+    image: quay.io/keycloak/keycloak:26.4
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: 'admin'
       KC_BOOTSTRAP_ADMIN_PASSWORD: 'admin123'
@@ -33,11 +33,7 @@ services:
       KC_DB_PASSWORD: 'keycloak123'
     volumes:
       - ./init/evidence-realm.json:/opt/keycloak/data/import/evidence-realm.json:ro
-    command:
-      - 'start-dev'
-      - '--import-realm'
-      - '--proxy-headers forwarded'
-      - '--verbose'
+    command: 'start-dev --import-realm --proxy-headers=forwarded --verbose'
     healthcheck:
       test:
         [
@@ -57,7 +53,7 @@ services:
       - traefik.http.services.keycloak.loadbalancer.server.port=8080
 
   traefik:
-    image: traefik:v2.5
+    image: traefik:v3.6
     command:
       - '--api.insecure=true'
       - '--providers.docker=true'
