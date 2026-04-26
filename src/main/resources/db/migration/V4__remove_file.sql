@@ -1,0 +1,4 @@
+ALTER TABLE attachment 
+ALTER COLUMN file_name SET NOT NULL;
+
+DROP TABLE IF EXISTS file;

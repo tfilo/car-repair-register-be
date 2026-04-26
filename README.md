@@ -31,3 +31,16 @@ on  [Swagger UI](http://localhost:8090/api/car-repair-register/swagger-ui/index.
 ## Integration tests
 
 ./mvnw clean integration-test
+
+## Important - set uploads directory using environment variable:
+
+For docker it looks like this:
+
+```
+environment:
+    APP_UPLOAD_DIR: /uploads
+volumes:
+     - ./uploads:/uploads
+```
+
+and correct write permissions
