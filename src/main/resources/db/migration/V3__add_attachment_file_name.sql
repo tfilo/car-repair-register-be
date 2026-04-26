@@ -1,0 +1,1 @@
+ALTER TABLE attachment ADD file_name VARCHAR(36);

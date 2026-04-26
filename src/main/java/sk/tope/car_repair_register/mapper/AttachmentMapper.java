@@ -9,13 +9,13 @@ import java.io.IOException;
 
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         collectionMappingStrategy = CollectionMappingStrategy.ACCESSOR_ONLY,
-        uses = {FileMapper.class, StringTrimmer.class},
+        uses = {StringTrimmer.class},
         componentModel = "spring"
 )
 public interface AttachmentMapper {
 
     @Mappings({
-            @Mapping(target = "file", source = "multipartFile"),
+            @Mapping(target = "fileName", source = "fileName"),
             @Mapping(target = "mimeType", source = "multipartFile.contentType"),
             @Mapping(target = "name", source = "multipartFile.originalFilename"),
             @Mapping(target = "id", ignore = true),
@@ -25,7 +25,7 @@ public interface AttachmentMapper {
             @Mapping(target = "modified", ignore = true),
             @Mapping(target = "deleted", ignore = true),
     })
-    Attachment mapFileToEntity(MultipartFile multipartFile) throws IOException;
+    Attachment mapFileToEntity(MultipartFile multipartFile, String fileName) throws IOException;
 
     AttachmentSo mapToAttachmentSo(Attachment attachment);
 }

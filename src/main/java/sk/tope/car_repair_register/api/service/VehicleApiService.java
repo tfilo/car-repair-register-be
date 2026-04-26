@@ -1,5 +1,6 @@
 package sk.tope.car_repair_register.api.service;
 
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class VehicleApiService {
     private VehicleMapper vehicleMapper;
     private VehicleRepository vehicleRepository;
     private CustomerRepository customerRepository;
+    private FileStorageService fileStorageService;
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {
@@ -51,16 +53,24 @@ public class VehicleApiService {
         this.vehicleRepository = vehicleRepository;
     }
 
+    @Autowired
+    public void setFileStorageService(FileStorageService fileStorageService) {
+        this.fileStorageService = fileStorageService;
+    }
+
     public Page<VehicleSo> find(String query, Long customerId, Pageable pageable) {
         LOGGER.debug("find({},{},{})", query, customerId, pageable);
-        Page<Vehicle> result = vehicleRepository.findAll(new VehicleSpecification(query, customerId, tokenHandler), pageable);
+        Page<Vehicle> result = vehicleRepository
+                .findAll(new VehicleSpecification(query, customerId, tokenHandler), pageable);
         LOGGER.debug("find({},{},{})={}", query, customerId, pageable, result);
         return result.map(v -> vehicleMapper.mapToVehicleSo(v));
     }
 
     public VehicleSo get(Long id) {
         LOGGER.debug("get({})", id);
-        Vehicle result = vehicleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
+        Vehicle result = vehicleRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.VEHICLE_NOT_FOUND.name()));
         LOGGER.debug("get({})={}", id, result);
         return vehicleMapper.mapToVehicleSo(result);
     }
@@ -69,14 +79,17 @@ public class VehicleApiService {
     public VehicleSo create(VehicleCreateSo vehicleCreateSo) {
         LOGGER.debug("create({})", vehicleCreateSo);
         Vehicle vehicle = vehicleMapper.mapToVehicle(vehicleCreateSo);
-        Customer customer = customerRepository.findById(vehicleCreateSo.customerId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
+        Customer customer = customerRepository.findById(vehicleCreateSo.customerId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.CUSTOMER_NOT_FOUND.name()));
         vehicle.setCustomer(customer);
         try {
             vehicle = vehicleRepository.saveAndFlush(vehicle);
             LOGGER.debug("create({})={}", vehicleCreateSo, vehicle);
         } catch (DataIntegrityViolationException dive) {
             LOGGER.error("create({})= {}", vehicleCreateSo, dive.getMessage());
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.VEHICLE_ALREADY_EXISTS.name());
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    ErrorBundle.VEHICLE_ALREADY_EXISTS.name());
         }
         return vehicleMapper.mapToVehicleSo(vehicle);
     }
@@ -84,10 +97,14 @@ public class VehicleApiService {
     @Transactional
     public VehicleSo update(Long id, VehicleUpdateSo vehicleUpdateSo) {
         LOGGER.debug("update({})", vehicleUpdateSo);
-        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.VEHICLE_NOT_FOUND.name()));
         vehicleMapper.mapTo(vehicle, vehicleUpdateSo);
         if (!vehicle.getCustomer().getId().equals(vehicleUpdateSo.customerId())) {
-            Customer customer = customerRepository.findById(vehicleUpdateSo.customerId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
+            Customer customer = customerRepository.findById(vehicleUpdateSo.customerId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            ErrorBundle.CUSTOMER_NOT_FOUND.name()));
             vehicle.setCustomer(customer);
         }
         try {
@@ -95,7 +112,8 @@ public class VehicleApiService {
             LOGGER.debug("update({})={}", vehicleUpdateSo, vehicle);
         } catch (DataIntegrityViolationException dive) {
             LOGGER.error("update({})= {}", vehicleUpdateSo, dive.getMessage());
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.VEHICLE_ALREADY_EXISTS.name());
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    ErrorBundle.VEHICLE_ALREADY_EXISTS.name());
         }
         return vehicleMapper.mapToVehicleSo(vehicle);
     }
@@ -103,7 +121,10 @@ public class VehicleApiService {
     @Transactional
     public void delete(Long id) {
         LOGGER.debug("delete({})", id);
-        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.VEHICLE_NOT_FOUND.name()));
+
         vehicleRepository.delete(vehicle);
     }
 }

@@ -1,5 +1,6 @@
 package sk.tope.car_repair_register.api.service;
 
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class CustomerApiService {
     private static TokenHandler tokenHandler;
     private CustomerMapper customerMapper;
     private CustomerRepository customerRepository;
+    private FileStorageService fileStorageService;
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {
@@ -42,16 +44,24 @@ public class CustomerApiService {
         this.customerRepository = customerRepository;
     }
 
+    @Autowired
+    public void setFileStorageService(FileStorageService fileStorageService) {
+        this.fileStorageService = fileStorageService;
+    }
+
     public Page<CustomerSo> find(String query, Pageable pageable) {
         LOGGER.debug("find({},{})", query, pageable);
-        Page<Customer> result = customerRepository.findAll(new CustomerSpecification(query, tokenHandler), pageable);
+        Page<Customer> result = customerRepository
+                .findAll(new CustomerSpecification(query, tokenHandler), pageable);
         LOGGER.debug("find({},{})={}", query, pageable, result);
         return result.map(c -> customerMapper.mapToCustomerSo(c));
     }
 
     public CustomerSo get(Long id) {
         LOGGER.debug("get({})", id);
-        Customer result = customerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
+        Customer result = customerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.CUSTOMER_NOT_FOUND.name()));
         LOGGER.debug("get({})={}", id, result);
         return customerMapper.mapToCustomerSo(result);
     }
@@ -68,7 +78,9 @@ public class CustomerApiService {
     @Transactional
     public CustomerSo update(Long id, CustomerUpdateSo customerUpdateSo) {
         LOGGER.debug("update({})", customerUpdateSo);
-        Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.CUSTOMER_NOT_FOUND.name()));
         customerMapper.mapTo(customer, customerUpdateSo);
         customer = customerRepository.saveAndFlush(customer);
         LOGGER.debug("update({})={}", customerUpdateSo, customer);
@@ -78,7 +90,10 @@ public class CustomerApiService {
     @Transactional
     public void delete(Long id) {
         LOGGER.debug("delete({})", id);
-        Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.CUSTOMER_NOT_FOUND.name()));
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.CUSTOMER_NOT_FOUND.name()));
+
         customerRepository.delete(customer);
     }
 }

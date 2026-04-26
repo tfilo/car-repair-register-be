@@ -1,5 +1,6 @@
 package sk.tope.car_repair_register.api.service;
 
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class RepairLogApiService {
     private RepairLogMapper repairLogMapper;
     private RepairLogRepository repairLogRepository;
     private VehicleRepository vehicleRepository;
+    private FileStorageService fileStorageService;
 
     @Autowired
     public void setTokenHandler(TokenHandler tokenHandler) {
@@ -51,16 +53,24 @@ public class RepairLogApiService {
         this.vehicleRepository = vehicleRepository;
     }
 
+    @Autowired
+    public void setFileStorageService(FileStorageService fileStorageService) {
+        this.fileStorageService = fileStorageService;
+    }
+
     public Page<RepairLogSo> find(String query, Long vehicleId, Pageable pageable) {
         LOGGER.debug("find({},{},{})", query, vehicleId, pageable);
-        Page<RepairLog> result = repairLogRepository.findAll(new RepairLogSpecification(query, vehicleId, tokenHandler), pageable);
+        Page<RepairLog> result = repairLogRepository
+                .findAll(new RepairLogSpecification(query, vehicleId, tokenHandler), pageable);
         LOGGER.debug("find({},{},{})={}", query, vehicleId, pageable, result);
         return result.map(rl -> repairLogMapper.mapToRepairLogSo(rl));
     }
 
     public RepairLogSo get(Long id) {
         LOGGER.debug("get({})", id);
-        RepairLog result = repairLogRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.REPAIR_LOG_NOT_FOUND.name()));
+        RepairLog result = repairLogRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.REPAIR_LOG_NOT_FOUND.name()));
         LOGGER.debug("get({})={}", id, result);
         return repairLogMapper.mapToRepairLogSo(result);
     }
@@ -69,14 +79,17 @@ public class RepairLogApiService {
     public RepairLogSo create(RepairLogCreateSo repairLogCreateSo) {
         LOGGER.debug("create({})", repairLogCreateSo);
         RepairLog repairLog = repairLogMapper.mapToRepairLog(repairLogCreateSo);
-        Vehicle vehicle = vehicleRepository.findById(repairLogCreateSo.vehicleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
+        Vehicle vehicle = vehicleRepository.findById(repairLogCreateSo.vehicleId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.VEHICLE_NOT_FOUND.name()));
         repairLog.setVehicle(vehicle);
         try {
             repairLog = repairLogRepository.saveAndFlush(repairLog);
             LOGGER.debug("create({})={}", repairLogCreateSo, repairLog);
         } catch (DataIntegrityViolationException dive) {
             LOGGER.error("create({})= {}", repairLogCreateSo, dive.getMessage());
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.REPAIR_LOG_ALREADY_EXISTS.name());
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    ErrorBundle.REPAIR_LOG_ALREADY_EXISTS.name());
         }
         return repairLogMapper.mapToRepairLogSo(repairLog);
     }
@@ -84,10 +97,14 @@ public class RepairLogApiService {
     @Transactional
     public RepairLogSo update(Long id, RepairLogUpdateSo repairLogUpdateSo) {
         LOGGER.debug("update({})", repairLogUpdateSo);
-        RepairLog repairLog = repairLogRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.REPAIR_LOG_NOT_FOUND.name()));
+        RepairLog repairLog = repairLogRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.REPAIR_LOG_NOT_FOUND.name()));
         repairLogMapper.mapTo(repairLog, repairLogUpdateSo);
         if (!repairLog.getVehicle().getId().equals(repairLogUpdateSo.vehicleId())) {
-            Vehicle vehicle = vehicleRepository.findById(repairLogUpdateSo.vehicleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.VEHICLE_NOT_FOUND.name()));
+            Vehicle vehicle = vehicleRepository.findById(repairLogUpdateSo.vehicleId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            ErrorBundle.VEHICLE_NOT_FOUND.name()));
             repairLog.setVehicle(vehicle);
         }
         try {
@@ -95,7 +112,8 @@ public class RepairLogApiService {
             LOGGER.debug("update({})={}", repairLogUpdateSo, repairLog);
         } catch (DataIntegrityViolationException dive) {
             LOGGER.error("update({})= {}", repairLogUpdateSo, dive.getMessage());
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorBundle.REPAIR_LOG_ALREADY_EXISTS.name());
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    ErrorBundle.REPAIR_LOG_ALREADY_EXISTS.name());
         }
         return repairLogMapper.mapToRepairLogSo(repairLog);
     }
@@ -103,7 +121,9 @@ public class RepairLogApiService {
     @Transactional
     public void delete(Long id) {
         LOGGER.debug("delete({})", id);
-        RepairLog repairLog = repairLogRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorBundle.REPAIR_LOG_NOT_FOUND.name()));
+        RepairLog repairLog = repairLogRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        ErrorBundle.REPAIR_LOG_NOT_FOUND.name()));
         repairLogRepository.delete(repairLog);
     }
 }

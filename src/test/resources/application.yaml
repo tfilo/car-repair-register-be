@@ -48,4 +48,8 @@ management:
 
 logging:
   level:
-    sk.tope.car_repair_register: error
+    sk.tope.car_repair_register: debug
+
+app:
+  upload:
+    dir: ${HOME}/uploads

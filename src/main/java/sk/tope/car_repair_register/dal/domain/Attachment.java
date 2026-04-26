@@ -28,8 +28,8 @@ public class Attachment extends TechnicalAttributes {
     private String mimeType;
 
     @NotNull
-    @OneToOne(mappedBy = "attachment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private File file;
+    @Column(name = "file_name")
+    private String fileName;
 
     @NotNull
     @ManyToOne
@@ -72,12 +72,12 @@ public class Attachment extends TechnicalAttributes {
         this.mimeType = mimeType;
     }
 
-    public File getFile() {
-        return file;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public RepairLog getRepairLog() {
@@ -94,6 +94,7 @@ public class Attachment extends TechnicalAttributes {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", mimeType='" + mimeType + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", created=" + super.getCreated() +
                 ", modified=" + super.getModified() +
                 ", deleted=" + super.getDeleted() +
